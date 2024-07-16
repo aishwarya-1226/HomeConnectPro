@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Inquiries{% endblock %}
+{% block content %}
+<h2>Inquiry List</h2>
+<ul>
+    {% for inquiry in inquiries %}
+        <li>
+            <a href="{% url 'inquiry_detail' inquiry.id %}">{{ inquiry.property.address }}</a>
+            - Status: {{ inquiry.status }}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

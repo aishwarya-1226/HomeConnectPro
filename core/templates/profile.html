@@ -1,0 +1,12 @@
+<!-- core/templates/profile.html -->
+{% extends 'base.html' %}
+
+{% block title %}Profile - HomeConnect{% endblock %}
+
+{% block content %}
+<h2>Profile</h2>
+<p>Username: {{ user.username }}</p>
+<p>Email: {{ user.email }}</p>
+<p>Role: {{ user.get_user_role_display }}</p>
+<p>Address: {{ user.address }}</p>
+{% endblock %}

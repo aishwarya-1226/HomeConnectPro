@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - HomeConnect{% endblock %}
+
+{% block content %}
+<h2>Available Properties</h2>
+
+{% if user.is_authenticated %}
+    {% if user_role == 'property_purchaser' %}
+        <a href="{% url 'create_property' %}">Add New Listing</a>
+    {% elif user_role == 'salesperson' %}
+        <a href="{% url 'create_property' %}">Add New Listing</a>
+        <a href="{% url 'inquiry_list' %}">View Inquiries</a>
+    {% elif user_role == 'client' %}
+        <a href="{% url 'inquiry_list' %}">Track Inquiries</a>
+        <a href="{% url 'review_list' %}">View My Reviews</a>
+    {% endif %}
+{% endif %}
+
+<div class="property-list">
+    {% for property in properties %}
+        <div class="property">
+            <h3><a href="{% url 'property_detail' property.id %}">{{ property.address }}</a></h3>
+            <p>{{ property.description }}</p>
+            <p>Price: ${{ property.price }}</p>
+            <p>Category: {{ property.category }}</p>
+            <p>Land Size: {{ property.land_size }}</p>
+            {% if property.image %}
+                <img src="{{ property.image.url }}" alt="Property Image">
+            {% else %}
+                <p>No Image Available</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Inquiry Detail{% endblock %}
+{% block content %}
+<h2>Inquiry Detail</h2>
+<p>Property: {{ inquiry.property.address }}</p>
+<p>Client: {{ inquiry.client.username }}</p>
+<p>Offer: ${{ inquiry.offer }}</p>
+<p>Timeline: {{ inquiry.timeline }}</p>
+<p>Availability: {{ inquiry.availability }}</p>
+<p>Status: {{ inquiry.status }}</p>
+<p>Estimated Closing Time: {{ inquiry.estimated_closing_time }}</p>
+<p>Total Price: {{ inquiry.total_price }}</p>
+<p>Response: {{ inquiry.response }}</p>
+
+{% if user.user_role == 'salesperson' and inquiry.status != 'Closed' %}
+    <form method="post">
+        {% csrf_token %}
+        <textarea name="response" placeholder="Write your response here..."></textarea>
+        <button type="submit">Respond and Close Inquiry</button>
+    </form>
+{% endif %}
+{% endblock %}

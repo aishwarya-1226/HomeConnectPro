@@ -1,0 +1,13 @@
+<!-- core/templates/review_list.html -->
+{% extends "base.html" %}
+
+{% block title %}Review List - HomeConnect{% endblock %}
+
+{% block content %}
+    <h2>Review List</h2>
+    <ul>
+        {% for review in reviews %}
+            <li>{{ review.client.username }} - {{ review.rating }} stars</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
