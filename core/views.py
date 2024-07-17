@@ -85,24 +85,17 @@ def profile(request, user_id):
 
 @login_required
 def create_property(request):
-    if request.user.user_role != 'salesperson':
+    if request.user.user_role != 'property_purchaser':
         return HttpResponseForbidden("You are not allowed to add properties.")
 
     if request.method == 'POST':
         form = PropertyForm(request.POST, request.FILES)
         if form.is_valid():
             property_instance = form.save(commit=False)
-            try:
-                property_instance.salesperson = Salesperson.objects.get(user=request.user)
-                property_instance.save()
-                messages.success(request, 'Property created successfully!')
-                return redirect('property_list')
-            except Salesperson.DoesNotExist:
-                messages.error(request, 'No associated role found for this user.')
-            except Exception as e:
-                messages.error(request, f'An error occurred: {e}')
-        else:
-            messages.error(request, 'Failed to create property. Please check the form for errors.')
+            property_instance.property_purchaser = PropertyPurchaser.objects.get(user=request.user)
+            property_instance.save()
+            messages.success(request, 'Property created successfully!')
+            return redirect('property_list')
     else:
         form = PropertyForm()
 
@@ -172,14 +165,19 @@ def create_review(request, property_id):
         if form.is_valid():
             review = form.save(commit=False)
             review.client = request.user
-            review.property_purchaser = property_instance.property_purchaser
+            review.property = property_instance
             review.save()
             messages.success(request, 'Review submitted successfully!')
-            return redirect('review_list')
+            return redirect('property_detail', property_id=property_id)
     else:
         form = ReviewForm()
     return render(request, 'create_review.html', {'form': form, 'property': property_instance})
 
+@login_required
+def review_list(request, property_id):
+    property_instance = get_object_or_404(Property, id=property_id)
+    reviews = Review.objects.filter(property=property_instance)
+    return render(request, 'review_list.html', {'property': property_instance, 'reviews': reviews})
 @login_required
 def review_list(request):
     if request.user.user_role in ['salesperson', 'property_purchaser']:
@@ -229,3 +227,14 @@ def promote_property(request, property_id):
     share_text = f"Check out this property: {property_instance.address} - {share_url}"
     
     return render(request, 'promote_property.html', {'property': property_instance, 'share_text': share_text})
+
+
+
+@login_required
+def property_purchaser_reviews(request):
+    if request.user.user_role != 'property_purchaser':
+        return HttpResponseForbidden("You are not allowed to view this page.")
+
+    property_purchaser = get_object_or_404(PropertyPurchaser, user=request.user)
+    reviews = Review.objects.filter(property__property_purchaser=property_purchaser)
+    return render(request, 'property_purchaser_reviews.html', {'reviews': reviews})

@@ -1,6 +1,8 @@
-from django.contrib.auth.models import AbstractUser
+# models.py
+
 from django.db import models
-from django.urls import reverse
+from django.contrib.auth.models import AbstractUser
+from django.urls import reverse  
 
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
@@ -26,6 +28,7 @@ class PropertyPurchaser(models.Model):
 class Salesperson(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     license_number = models.CharField(max_length=50)
+
 class Property(models.Model):
     property_purchaser = models.ForeignKey(PropertyPurchaser, on_delete=models.CASCADE)
     address = models.CharField(max_length=255)
@@ -34,7 +37,7 @@ class Property(models.Model):
     category = models.CharField(max_length=50)
     land_size = models.CharField(max_length=50)
     image = models.ImageField(upload_to='property_images/', null=True, blank=True)
-    salesperson = models.ForeignKey(Salesperson, on_delete=models.CASCADE, related_name='properties', null=True, blank=True)  # Make this field nullable
+    salesperson = models.ForeignKey(Salesperson, on_delete=models.CASCADE, related_name='properties', null=True, blank=True)
 
     def __str__(self):
         return self.address
@@ -51,12 +54,17 @@ class Inquiry(models.Model):
     status = models.CharField(max_length=50, default='Pending')
     estimated_closing_time = models.DateTimeField(null=True, blank=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    response = models.TextField(null=True, blank=True)  # Field for salesperson's response
+    response = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"Inquiry for {self.property.address} by {self.client.username}"
+
 class Review(models.Model):
     client = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    property_purchaser = models.ForeignKey(PropertyPurchaser, on_delete=models.CASCADE)
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, default=1)  # Assume property with ID 1 exists
     rating = models.IntegerField()
     review_text = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Review by {self.client.username} for {self.property.address}"

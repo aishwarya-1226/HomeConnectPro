@@ -26,6 +26,10 @@ urlpatterns = [
     path('reviews/', views.review_list, name='review_list'),
     path('reviews/create/<int:property_id>/', views.create_review, name='create_review'),
     path('search/', views.search, name='search'),
+    path('properties/<int:property_id>/reviews/', views.review_list, name='review_list'),
+    path('properties/<int:property_id>/reviews/create/', views.create_review, name='create_review'),
+    path('property_purchaser/reviews/', views.property_purchaser_reviews, name='property_purchaser_reviews'),
+
 ]
 
 if settings.DEBUG:

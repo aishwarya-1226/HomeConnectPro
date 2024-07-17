@@ -1,3 +1,5 @@
+<!-- templates/property_detail.html -->
+
 {% extends 'base.html' %}
 
 {% block title %}Property Detail - HomeConnect{% endblock %}
@@ -15,8 +17,29 @@
     <p>No Image Available</p>
 {% endif %}
 
-{% if user.is_authenticated and user.user_role == 'salesperson' %}
-    <a href="{% url 'promote_property' property.id %}" class="btn">Promote on Social Media</a>
+{% if user.is_authenticated %}
+    {% if user.user_role == 'salesperson' %}
+        <a href="{% url 'promote_property' property.id %}" class="btn">Promote on Social Media</a>
+    {% elif user.user_role == 'client' %}
+        <h3>Inquire About This Property</h3>
+        <a href="{% url 'create_inquiry' property.id %}" class="btn">Inquire</a>
+        
+        <h3>Leave a Review</h3>
+        <a href="{% url 'create_review' property.id %}" class="btn">Leave a Review</a>
+    {% endif %}
+    <h3>Reviews</h3>
+    <ul>
+        {% for review in property.review_set.all %}
+            <li>
+                <strong>{{ review.client.username }}:</strong>
+                <span>{{ review.rating }} stars</span>
+                <p>{{ review.review_text }}</p>
+                <small>{{ review.created_at }}</small>
+            </li>
+        {% empty %}
+            <li>No reviews yet.</li>
+        {% endfor %}
+    </ul>
 {% endif %}
 
 {% endblock %}
