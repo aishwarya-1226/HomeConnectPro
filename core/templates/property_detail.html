@@ -25,6 +25,8 @@
     {% elif user.user_role == 'client' %}
         <h3>Inquire About This Property</h3>
         <a href="{% url 'create_inquiry' property.id %}" class="btn">Inquire</a>
+        <h3>Leave a Review</h3>
+        <a href="{% url 'create_review' property.id %}" class="btn">Leave a Review</a>
     {% elif user.user_role == 'property_purchaser' %}
         <h3>Inquire About This Property</h3>
         <a href="{% url 'create_inquiry' property.id %}" class="btn">Inquire</a>

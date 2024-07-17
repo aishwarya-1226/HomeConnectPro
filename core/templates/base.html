@@ -20,7 +20,6 @@
                 <a href="{% url 'logout' %}">Logout</a>
                 {% if user.user_role == 'property_purchaser' %}
                     <a href="{% url 'create_property' %}">Add New Listing</a>
-                    <a href="{% url 'property_purchaser_reviews' %}">View Reviews</a>
                 {% endif %}
                 <a href="{% url 'inquiry_list' %}">View Inquiries</a>
             {% else %}
