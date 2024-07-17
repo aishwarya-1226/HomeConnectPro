@@ -1,21 +1,27 @@
-<!-- templates/review_list.html -->
-
 {% extends 'base.html' %}
 
-{% block title %}Reviews{% endblock %}
+{% block title %}Search Results - HomeConnect{% endblock %}
 
 {% block content %}
-<h2>Reviews for {{ property.address }}</h2>
-<ul>
-    {% for review in reviews %}
-    <li>
-        <strong>{{ review.client.username }}:</strong>
-        <span>{{ review.rating }} stars</span>
-        <p>{{ review.review_text }}</p>
-        <small>{{ review.created_at }}</small>
-    </li>
-    {% empty %}
-    <li>No reviews yet.</li>
-    {% endfor %}
-</ul>
+<h2>Search Results for "{{ query }}"</h2>
+<div class="property-list">
+    {% if properties %}
+        {% for property in properties %}
+            <div class="property">
+                <h3><a href="{% url 'property_detail' property.id %}">{{ property.address }}</a></h3>
+                <p>{{ property.description }}</p>
+                <p>Price: ${{ property.price }}</p>
+                <p>Category: {{ property.category }}</p>
+                <p>Land Size: {{ property.land_size }}</p>
+                {% if property.image %}
+                    <img src="{{ property.image.url }}" alt="Property Image">
+                {% else %}
+                    <p>No Image Available</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No properties found matching your search criteria.</p>
+    {% endif %}
+</div>
 {% endblock %}
