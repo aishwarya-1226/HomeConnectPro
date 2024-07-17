@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
 
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
@@ -25,7 +26,6 @@ class PropertyPurchaser(models.Model):
 class Salesperson(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     license_number = models.CharField(max_length=50)
-
 class Property(models.Model):
     property_purchaser = models.ForeignKey(PropertyPurchaser, on_delete=models.CASCADE)
     address = models.CharField(max_length=255)
@@ -38,6 +38,9 @@ class Property(models.Model):
 
     def __str__(self):
         return self.address
+
+    def get_absolute_url(self):
+        return reverse('property_detail', args=[str(self.id)])
 
 class Inquiry(models.Model):
     client = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

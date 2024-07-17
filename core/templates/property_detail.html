@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ property.address }} - HomeConnect{% endblock %}
+{% block title %}Property Detail - HomeConnect{% endblock %}
 
 {% block content %}
-<h2>{{ property.address }}</h2>
-<p>{{ property.description }}</p>
+<h2>Property Detail</h2>
+<p>Address: {{ property.address }}</p>
+<p>Description: {{ property.description }}</p>
 <p>Price: ${{ property.price }}</p>
 <p>Category: {{ property.category }}</p>
 <p>Land Size: {{ property.land_size }}</p>
@@ -14,9 +15,8 @@
     <p>No Image Available</p>
 {% endif %}
 
-{% if user.is_authenticated %}
-    <a href="{% url 'create_inquiry' property.id %}">Inquire</a>
-{% else %}
-    <a href="{% url 'login' %}?next={% url 'create_inquiry' property.id %}">Inquire</a>
+{% if user.is_authenticated and user.user_role == 'salesperson' %}
+    <a href="{% url 'promote_property' property.id %}" class="btn">Promote on Social Media</a>
 {% endif %}
+
 {% endblock %}

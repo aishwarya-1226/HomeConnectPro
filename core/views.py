@@ -6,6 +6,10 @@ from django.http import HttpResponseForbidden
 from .forms import UserRegistrationForm, PropertyForm, InquiryForm, ReviewForm, LoginForm
 from .models import Property, Inquiry, Review, CustomUser, PropertyPurchaser, Salesperson
 from django.db.models import Q
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from .models import Property
 
 def home(request):
     query = request.GET.get('query', '')
@@ -81,23 +85,19 @@ def profile(request, user_id):
 
 @login_required
 def create_property(request):
-    if request.user.user_role not in ['property_purchaser', 'salesperson']:
+    if request.user.user_role != 'salesperson':
         return HttpResponseForbidden("You are not allowed to add properties.")
-    
+
     if request.method == 'POST':
         form = PropertyForm(request.POST, request.FILES)
         if form.is_valid():
             property_instance = form.save(commit=False)
             try:
-                if request.user.user_role == 'property_purchaser':
-                    property_purchaser = PropertyPurchaser.objects.get(user=request.user)
-                    property_instance.property_purchaser = property_purchaser
-                elif request.user.user_role == 'salesperson':
-                    property_instance.salesperson = Salesperson.objects.get(user=request.user)
+                property_instance.salesperson = Salesperson.objects.get(user=request.user)
                 property_instance.save()
                 messages.success(request, 'Property created successfully!')
                 return redirect('property_list')
-            except (PropertyPurchaser.DoesNotExist, Salesperson.DoesNotExist):
+            except Salesperson.DoesNotExist:
                 messages.error(request, 'No associated role found for this user.')
             except Exception as e:
                 messages.error(request, f'An error occurred: {e}')
@@ -105,8 +105,9 @@ def create_property(request):
             messages.error(request, 'Failed to create property. Please check the form for errors.')
     else:
         form = PropertyForm()
-    
+
     return render(request, 'create_property.html', {'form': form})
+
 
 @login_required
 def property_list(request):
@@ -117,6 +118,7 @@ def property_list(request):
 def property_detail(request, property_id):
     property_instance = get_object_or_404(Property, id=property_id)
     return render(request, 'property_detail.html', {'property': property_instance})
+
 
 @login_required
 def create_inquiry(request, property_id):
@@ -188,9 +190,42 @@ def review_list(request):
 
 def search(request):
     query = request.GET.get('query', '')
-    properties = Property.objects.filter(
-        Q(address__icontains=query) |
-        Q(description__icontains=query) |
-        Q(category__icontains=query)
-    ) if query else Property.objects.none()
+    price = request.GET.get('price', None)
+    category = request.GET.get('category', None)
+    filters = Q()
+    if query:
+        filters &= Q(address__icontains=query) | Q(description__icontains=query) | Q(category__icontains=query)
+    if price:
+        filters &= Q(price__lte=price)
+    if category:
+        filters &= Q(category__icontains=category)
+    
+    properties = Property.objects.filter(filters) if filters else Property.objects.none()
     return render(request, 'search.html', {'properties': properties, 'query': query})
+
+@login_required
+def update_profile(request):
+    user = request.user
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully!')
+            return redirect('profile', user_id=user.id)
+        else:
+            messages.error(request, 'Failed to update profile. Please check the form for errors.')
+    else:
+        form = UserRegistrationForm(instance=user)
+    return render(request, 'update_profile.html', {'form': form})
+
+
+@login_required
+def promote_property(request, property_id):
+    if request.user.user_role != 'salesperson':
+        return HttpResponseForbidden("You are not allowed to promote properties.")
+    
+    property_instance = get_object_or_404(Property, id=property_id)
+    share_url = request.build_absolute_uri(property_instance.get_absolute_url())
+    share_text = f"Check out this property: {property_instance.address} - {share_url}"
+    
+    return render(request, 'promote_property.html', {'property': property_instance, 'share_text': share_text})
