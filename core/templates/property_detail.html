@@ -20,7 +20,12 @@
 {% if user.is_authenticated %}
     {% if user.user_role == 'salesperson' %}
         <a href="{% url 'promote_property' property.id %}" class="btn">Promote on Social Media</a>
+        <a href="{% url 'create_inquiry' property.id %}" class="btn">Inquire</a>
+
     {% elif user.user_role == 'client' %}
+        <h3>Inquire About This Property</h3>
+        <a href="{% url 'create_inquiry' property.id %}" class="btn">Inquire</a>
+    {% elif user.user_role == 'property_purchaser' %}
         <h3>Inquire About This Property</h3>
         <a href="{% url 'create_inquiry' property.id %}" class="btn">Inquire</a>
         
