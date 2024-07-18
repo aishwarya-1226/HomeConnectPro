@@ -39,6 +39,8 @@ jobs:
           ls -lrt
           cd ASP_HomeConnect
           git checkout main
-          sudo docker build -t myhome .
-          sudo docker run --name myhomecontainer -d -p 5000:8000 myhome
+          sudo docker build -t myhome:${{ github.run_number }} .
+          sudo docker images
+          sudo docker run --name myhomecontainer -d -p 5000:8000 myhome:${{ github.run_number }}
+          sudo docker ps
         EOF
