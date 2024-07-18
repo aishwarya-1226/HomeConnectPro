@@ -27,8 +27,11 @@ jobs:
         known_hosts: ${{ secrets.EC2_HOSTS }}
 
     - name: deploying in ec2
+      env:
+          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
       run: |
-        ssh -o StrictHostKeyChecking=no -i secrets.EC2_SSH_KEY ubuntu@18.117.168.125 << 'EOF'
+        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+        ssh -o StrictHostKeyChecking=no -i private_key ubuntu@18.117.168.125 << 'EOF'
           sudo docker stop myhomecontainer || true
           sudo docker rm myhomecontainer || true
           sudo docker build -t myhome .
