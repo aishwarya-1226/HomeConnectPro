@@ -1,9 +1,8 @@
-name: 'Terraform'
+name: 'Deployment'
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
 
 permissions:
   contents: read
@@ -11,13 +10,27 @@ permissions:
   id-token: write
 
 jobs:
-  terraform:
-    name: 'Terraform'
+  build:
+    name: 'deployment'
     runs-on: ubuntu-latest
     environment: production
 
+    steps:
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
+    - name: checkout 
+      uses: actions/checkout@v2
+
+    - name: install SSH key 
+      uses: shimataro/ssh-key-action@v2
+      with: 
+        key: ${{ secrets.EC2_SSH_KEY}}
+        known_hosts: ${{ secrets.EC2_HOSTS }}
+
+    - name: deploying in ec2
+      run: |
+      ssh -o StrictHostKeyChecking=no ubuntu@{{secrets.EC2_HOSTS}} << 'EOF'
+        docker stop myhomecontainer || true
+        docker rm myhomecontainer || true
+        docker build -t myhome .
+        docker run --name myhomecontainer -d -p 5000:8000 myhome
+      EOF
