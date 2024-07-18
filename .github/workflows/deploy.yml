@@ -36,6 +36,8 @@ jobs:
           sudo docker rm myhomecontainer || true
           ls -lrt
           pwd
+          rm -rf ASP_HomeConnect
+          git clone https://github.com/lxa54790/ASP_HomeConnect.git
           sudo docker build -t myhome .  
           sudo docker run --name myhomecontainer -d -p 5000:8000 myhome
         EOF
