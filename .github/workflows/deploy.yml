@@ -28,7 +28,7 @@ jobs:
 
     - name: deploying in ec2
       run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@18-117-168-125 << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i secrets.EC2_SSH_KEY ubuntu@18.117.168.125 << 'EOF'
           sudo docker stop myhomecontainer || true
           sudo docker rm myhomecontainer || true
           sudo docker build -t myhome .
