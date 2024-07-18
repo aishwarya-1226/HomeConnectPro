@@ -28,9 +28,9 @@ jobs:
 
     - name: deploying in ec2
       run: |
-      ssh -o StrictHostKeyChecking=no ubuntu@{{secrets.EC2_HOSTS}} << 'EOF'
-        docker stop myhomecontainer || true
-        docker rm myhomecontainer || true
-        docker build -t myhome .
-        docker run --name myhomecontainer -d -p 5000:8000 myhome
-      EOF
+        ssh -o StrictHostKeyChecking=no ubuntu@{{secrets.EC2_HOSTS}} << 'EOF'
+          docker stop myhomecontainer || true
+          docker rm myhomecontainer || true
+          docker build -t myhome .
+          docker run --name myhomecontainer -d -p 5000:8000 myhome
+        EOF
