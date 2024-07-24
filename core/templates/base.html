@@ -1,5 +1,3 @@
-<!-- base.html -->
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,6 +14,7 @@
         </form>
         <nav>
             {% if user.is_authenticated %}
+                <span>Welcome, {{ user.username }}</span>
                 <a href="{% url 'profile' user.id %}">Profile</a>
                 <a href="{% url 'logout' %}">Logout</a>
                 {% if user.user_role == 'property_purchaser' %}
