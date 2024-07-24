@@ -19,7 +19,7 @@
                 <a href="{% url 'profile' user.id %}">Profile</a>
                 <a href="{% url 'logout' %}">Logout</a>
                 {% if user.user_role == 'property_purchaser' %}
-                    <a href="{% url 'create_property' %}">Add New Listing</a>
+                    <a href="{% url 'create_property_step1' %}">Add New Listing</a>
                 {% endif %}
                 <a href="{% url 'inquiry_list' %}">View Inquiries</a>
             {% else %}

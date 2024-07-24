@@ -1,5 +1,3 @@
-<!-- templates/property_detail.html -->
-
 {% extends 'base.html' %}
 
 {% block title %}Property Detail - HomeConnect{% endblock %}
@@ -18,19 +16,15 @@
 {% endif %}
 
 {% if user.is_authenticated %}
+    <a href="{% url 'more_property_details' property.id %}" class="btn">More Details</a>
+    {% if user.user_role == 'property_purchaser' %}
+        <a href="{% url 'edit_property' property.id %}" class="btn">Edit Property Details</a>
+    {% endif %}
     {% if user.user_role == 'salesperson' %}
         <a href="{% url 'promote_property' property.id %}" class="btn">Promote on Social Media</a>
-        <a href="{% url 'create_inquiry' property.id %}" class="btn">Inquire</a>
-
     {% elif user.user_role == 'client' %}
         <h3>Inquire About This Property</h3>
         <a href="{% url 'create_inquiry' property.id %}" class="btn">Inquire</a>
-        <h3>Leave a Review</h3>
-        <a href="{% url 'create_review' property.id %}" class="btn">Leave a Review</a>
-    {% elif user.user_role == 'property_purchaser' %}
-        <h3>Inquire About This Property</h3>
-        <a href="{% url 'create_inquiry' property.id %}" class="btn">Inquire</a>
-        
         <h3>Leave a Review</h3>
         <a href="{% url 'create_review' property.id %}" class="btn">Leave a Review</a>
     {% endif %}
@@ -47,6 +41,7 @@
             <li>No reviews yet.</li>
         {% endfor %}
     </ul>
+{% else %}
+    <a href="{% url 'login' %}?next={% url 'more_property_details' property.id %}" class="btn">More Details</a>
 {% endif %}
-
 {% endblock %}

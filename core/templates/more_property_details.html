@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}More Property Details - HomeConnect{% endblock %}
+
+{% block content %}
+<h2>More Property Details</h2>
+<p>Address: {{ property.address }}</p>
+<p>Description: {{ property.description }}</p>
+<p>Price: ${{ property.price }}</p>
+<p>Category: {{ property.category }}</p>
+<p>Land Size: {{ property.land_size }}</p>
+
+<h3>Additional Details</h3>
+<p>Year Built: {{ property.year_built }}</p>
+<p>Number of Bedrooms: {{ property.number_of_bedrooms }}</p>
+<p>Number of Bathrooms: {{ property.number_of_bathrooms }}</p>
+<p>Garage: {{ property.garage }}</p>
+
+<h3>Additional Photos</h3>
+{% for photo in property.additional_photos.all %}
+    <img src="{{ photo.photo.url }}" alt="Additional Photo">
+{% empty %}
+    <p>No additional photos available.</p>
+{% endfor %}
+{% endblock %}

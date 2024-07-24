@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Track Inquiries{% endblock %}
+
+{% block content %}
+<h2>Track Inquiries</h2>
+<ul>
+    {% for inquiry in inquiries %}
+        <li>
+            <strong>Property:</strong> {{ inquiry.property.address }}<br>
+            <strong>Client:</strong> {{ inquiry.client.username }}<br>
+            <strong>Offer:</strong> ${{ inquiry.offer }}<br>
+            <strong>Timeline:</strong> {{ inquiry.timeline }}<br>
+            <strong>Availability:</strong> {{ inquiry.availability }}<br>
+            <strong>Status:</strong> {{ inquiry.status }}<br>
+            <strong>Response:</strong> {{ inquiry.response }}<br>
+        </li>
+    {% empty %}
+        <li>No inquiries yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,13 +1,14 @@
-<!-- core/templates/create_property.html -->
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block title %}Create Property - HomeConnect{% endblock %}
 
 {% block content %}
-    <h2>Create Property</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Create</button>
-    </form>
+<h2>Create Property</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <h3>Additional Photos</h3>
+    {{ photos_form.as_p }}
+    <button type="submit">Create Property</button>
+</form>
 {% endblock %}

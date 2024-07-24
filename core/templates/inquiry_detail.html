@@ -12,7 +12,7 @@
 <p>Total Price: {{ inquiry.total_price }}</p>
 <p>Response: {{ inquiry.response }}</p>
 
-{% if user.user_role == 'salesperson' and inquiry.status != 'Closed' %}
+{% if user_role == 'salesperson' and inquiry.status != 'Closed' %}
     <form method="post">
         {% csrf_token %}
         <textarea name="response" placeholder="Write your response here..."></textarea>
