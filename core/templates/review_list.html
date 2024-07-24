@@ -7,7 +7,7 @@
     <h2>Review List</h2>
     <ul>
         {% for review in reviews %}
-            <li>{{ review.client.username }} - {{ review.rating }} stars</li>
+            <li>{{ review.property.address }} - {{ review.rating }} stars</li>
         {% endfor %}
     </ul>
 {% endblock %}
