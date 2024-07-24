@@ -8,9 +8,9 @@
 {% if user.is_authenticated %}
     {% if user_role == 'property_purchaser' %}
         <a href="{% url 'create_property_step1' %}">Add New Listing</a>
-        <a href="{% url 'inquiry_list' %}">Track Inquiries</a>
+        <a href="{% url 'inquiry_list' %}">View Inquiries</a>
     {% elif user_role == 'salesperson' %}
-        <a href="{% url 'inquiry_list' %}">Track Inquiries</a>
+        <a href="{% url 'inquiry_list' %}">View Inquiries</a>
     {% elif user_role == 'client' %}
         <a href="{% url 'inquiry_list' %}">Track Inquiries</a>
         <a href="{% url 'review_list' %}">View My Reviews</a>

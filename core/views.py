@@ -153,13 +153,11 @@ def inquiry_list(request):
     if user_role == 'salesperson':
         inquiries = Inquiry.objects.all()  # Fetch all inquiries for salespeople
     elif user_role == 'property_purchaser':
-        property_purchaser = get_object_or_404(PropertyPurchaser, user=request.user)
-        inquiries = Inquiry.objects.filter(property__property_purchaser=property_purchaser)
+        inquiries = Inquiry.objects.all()
     else:
         inquiries = Inquiry.objects.filter(client=request.user)  # Fetch only client's inquiries for clients
-    
-    return render(request, 'inquiry_list.html', {'inquiries': inquiries, 'user_role': user_role})
 
+    return render(request, 'inquiry_list.html', {'inquiries': inquiries, 'user_role': user_role})
 
 
 @login_required
