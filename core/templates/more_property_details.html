@@ -17,9 +17,11 @@
 <p>Garage: {{ property.garage }}</p>
 
 <h3>Additional Photos</h3>
+<div class="property-list">
 {% for photo in property.additional_photos.all %}
-    <img src="{{ photo.photo.url }}" alt="Additional Photo">
+    <img src="{{ photo.photo.url }}" alt="Additional Photo" class="property-image">
 {% empty %}
     <p>No additional photos available.</p>
 {% endfor %}
+</div>
 {% endblock %}

@@ -176,4 +176,17 @@ form label {
     border: 1px solid #f5c6cb;
 }
 
+.additional-photos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
 /* Add styles for other message types as needed */
+.property-image {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin: 10px 0;
+}

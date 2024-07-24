@@ -10,9 +10,20 @@
 <p>Category: {{ property.category }}</p>
 <p>Land Size: {{ property.land_size }}</p>
 {% if property.image %}
-    <img src="{{ property.image.url }}" alt="Property Image">
+    <img src="{{ property.image.url }}" alt="Property Image" class="property-image">
 {% else %}
     <p>No Image Available</p>
+{% endif %}
+
+<h3>Additional Photos</h3>
+{% if property.additionalphoto_set.all %}
+    <div class="additional-photos">
+        {% for photo in property.additionalphoto_set.all %}
+            <img src="{{ photo.image.url }}" alt="Additional Photo" class="property-image">
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No Additional Photos Available</p>
 {% endif %}
 
 {% if user.is_authenticated %}
