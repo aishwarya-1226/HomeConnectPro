@@ -1,22 +1,79 @@
 {% extends 'base.html' %}
 
-{% block title %}Track Inquiries{% endblock %}
+{% block title %}Track Inquiries - HomeConnect{% endblock %}
 
 {% block content %}
-<h2>Track Inquiries</h2>
-<ul>
-    {% for inquiry in inquiries %}
-        <li>
-            <strong>Property:</strong> {{ inquiry.property.address }}<br>
-            <strong>Client:</strong> {{ inquiry.client.username }}<br>
-            <strong>Offer:</strong> ${{ inquiry.offer }}<br>
-            <strong>Timeline:</strong> {{ inquiry.timeline }}<br>
-            <strong>Availability:</strong> {{ inquiry.availability }}<br>
-            <strong>Status:</strong> {{ inquiry.status }}<br>
-            <strong>Response:</strong> {{ inquiry.response }}<br>
-        </li>
-    {% empty %}
-        <li>No inquiries yet.</li>
-    {% endfor %}
-</ul>
+<div class="inquiries-box">
+    <h2>Inquiries for {{ property.address }}</h2>
+
+    <style>
+        .inquiry-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .inquiry-table th, .inquiry-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .inquiry-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .inquiry-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .inquiry-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .inquiry-table a {
+            text-decoration: none;
+            color: #007bff;
+            padding: 5px 10px;
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .inquiry-table a:hover {
+            background-color: #f1f1f1;
+            text-decoration: underline;
+        }
+    </style>
+
+    {% if inquiries %}
+        <table class="inquiry-table">
+            <thead>
+                <tr>
+                    <th>From</th>
+                    <th>Offer</th>
+                    <th>Timeline</th>
+                    <th>Availability</th>
+                    <th>Status</th>
+                    <th>Total Price</th>
+                    <th>Response</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inquiry in inquiries %}
+                    <tr>
+                        <td>{{ inquiry.client.username }}</td>
+                        <td>{{ inquiry.offer }}</td>
+                        <td>{{ inquiry.timeline }}</td>
+                        <td>{{ inquiry.availability }}</td>
+                        <td>{{ inquiry.status }}</td>
+                        <td>{{ inquiry.total_price|default:"None" }}</td>
+                        <td>{{ inquiry.response|default:"None" }}</td>
+                        <td>{{ inquiry.created_at|date:"F j, Y, g:i a" }}</td>
+                        <td><a href="{% url 'inquiry_detail' inquiry.id %}">View Details</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No inquiries yet.</p>
+    {% endif %}
+</div>
 {% endblock %}

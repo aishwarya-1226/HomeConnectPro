@@ -351,11 +351,8 @@ def create_property_step2(request):
 
 
 @login_required
-def track_inquiries(request):
-    if request.user.user_role != 'property_purchaser':
-        return HttpResponseForbidden("You are not allowed to view this page.")
+def track_inquiries(request, property_id):
+    property = get_object_or_404(Property, id=property_id)
+    inquiries = Inquiry.objects.filter(property=property)
 
-    property_purchaser = get_object_or_404(PropertyPurchaser, user=request.user)
-    inquiries = Inquiry.objects.filter(property__property_purchaser=property_purchaser)
-
-    return render(request, 'track_inquiries.html', {'inquiries': inquiries})
+    return render(request, 'track_inquiries.html', {'inquiries': inquiries, 'property_id': property_id})

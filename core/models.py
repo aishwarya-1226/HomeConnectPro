@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
+from datetime import datetime
 
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
@@ -44,9 +45,9 @@ class Property(models.Model):
 
     def get_absolute_url(self):
         return reverse('property_detail', args=[str(self.id)])
-
+    
 class Inquiry(models.Model):
-    client = models.ForeignKey(CustomUser, on_delete=models.CASCADE,related_name='inquiries')
+    client = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='inquiries')
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
     offer = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     timeline = models.CharField(max_length=100, default='As soon as possible')

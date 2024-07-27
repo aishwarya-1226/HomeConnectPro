@@ -15,24 +15,15 @@
     <p>No Image Available</p>
 {% endif %}
 
-<h3>Additional Photos</h3>
-{% if property.additionalphoto_set.all %}
-    <div class="additional-photos">
-        {% for photo in property.additionalphoto_set.all %}
-            <img src="{{ photo.image.url }}" alt="Additional Photo" class="property-image">
-        {% endfor %}
-    </div>
-{% else %}
-    <p>No Additional Photos Available</p>
-{% endif %}
-
 {% if user.is_authenticated %}
     <a href="{% url 'more_property_details' property.id %}" class="btn">More Details</a>
     {% if user.user_role == 'property_purchaser' %}
         <a href="{% url 'edit_property' property.id %}" class="btn">Edit Property Details</a>
+        <a href="{% url 'track_inquiries' property.id %}">View Property Inquiries</a>
     {% endif %}
     {% if user.user_role == 'salesperson' %}
         <a href="{% url 'promote_property' property.id %}" class="btn">Promote on Social Media</a>
+        <a href="{% url 'track_inquiries' property.id %}">View Property Inquiries</a>
     {% elif user.user_role == 'client' %}
         <h3>Inquire About This Property</h3>
         <a href="{% url 'create_inquiry' property.id %}" class="btn">Inquire</a>
