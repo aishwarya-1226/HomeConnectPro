@@ -9,6 +9,8 @@
 <p>Price: ${{ property.price }}</p>
 <p>Category: {{ property.category }}</p>
 <p>Land Size: {{ property.land_size }}</p>
+<p>State: {{ property.state }}</p>
+<p>Zip Code: {{ property.zip_code }}</p>
 {% if property.image %}
     <img src="{{ property.image.url }}" alt="Property Image" class="property-image">
 {% else %}

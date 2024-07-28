@@ -40,6 +40,8 @@ class Property(models.Model):
     number_of_bathrooms = models.CharField(max_length=5, null=True, blank=True)
     garage = models.CharField(max_length=5, null=True, blank=True)
     year_built = models.CharField(max_length=4, null=True, blank=True)
+    zip_code = models.CharField(max_length=5, null=True, blank=True)  # Ensure zip code is 5 digits
+    state = models.CharField(max_length=2, null=True, blank=True)  # State abbreviation
     def __str__(self):
         return self.address
 

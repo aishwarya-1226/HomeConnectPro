@@ -211,20 +211,29 @@ def review_list(request):
         reviews = Review.objects.filter(client=request.user)
     return render(request, 'review_list.html', {'reviews': reviews})
 
+
+
 def search(request):
     query = request.GET.get('query', '')
-    price = request.GET.get('price', None)
-    category = request.GET.get('category', None)
+    zip_code = request.GET.get('zipcode', '')
+    state = request.GET.get('state', '')
+
     filters = Q()
     if query:
         filters &= Q(address__icontains=query) | Q(description__icontains=query) | Q(category__icontains=query)
-    if price:
-        filters &= Q(price__lte=price)
-    if category:
-        filters &= Q(category__icontains=category)
-    
+    if zip_code:
+        filters &= Q(zip_code=zip_code)
+    if state:
+        filters &= Q(state=state)
+
     properties = Property.objects.filter(filters) if filters else Property.objects.none()
-    return render(request, 'search.html', {'properties': properties, 'query': query})
+
+    return render(request, 'search.html', {
+        'properties': properties,
+        'query': query,
+        'zipcode': zip_code,
+        'state': state
+    })
 
 @login_required
 def update_profile(request):

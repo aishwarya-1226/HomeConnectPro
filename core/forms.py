@@ -14,7 +14,7 @@ class LoginForm(forms.Form):
 class PropertyForm(forms.ModelForm):
     class Meta:
         model = Property
-        fields = ['address', 'category', 'description', 'price', 'year_built', 'number_of_bedrooms', 'number_of_bathrooms', 'land_size', 'image']
+        fields = ['address', 'category', 'description', 'price', 'year_built', 'number_of_bedrooms', 'number_of_bathrooms', 'land_size', 'image', 'state','zip_code']
         exclude = ['property_purchaser', 'salesperson']
 
 class InquiryForm(forms.ModelForm):
