@@ -15,6 +15,9 @@ from django.core.files.base import ContentFile
 
 
 
+def landing(request):
+    return render(request, 'landing.html')
+
 def home(request):
     query = request.GET.get('query', '')
     if query:
