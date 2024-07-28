@@ -122,6 +122,7 @@ def property_list(request):
     properties = Property.objects.all()
     return render(request, 'property_list.html', {'properties': properties})
 
+@login_required(login_url='/login/')
 def property_detail(request, property_id):
     property_instance = get_object_or_404(Property, id=property_id)
     user_role = request.user.user_role if request.user.is_authenticated else None
@@ -130,7 +131,6 @@ def property_detail(request, property_id):
         'property': property_instance,
         'user_role': user_role
     })
-
 
 @login_required
 def create_inquiry(request, property_id):
@@ -273,10 +273,7 @@ def property_purchaser_reviews(request):
     reviews = Review.objects.filter(property__property_purchaser=property_purchaser)
     return render(request, 'property_purchaser_reviews.html', {'reviews': reviews})
 
-@login_required
-def more_property_details(request, property_id):
-    property_instance = get_object_or_404(Property, id=property_id)
-    return render(request, 'more_property_details.html', {'property': property_instance})
+
 
 
 @login_required
@@ -289,7 +286,7 @@ def add_additional_photos(request, property_id):
             additional_photo.property = property_instance
             additional_photo.save()
             messages.success(request, 'Additional photo added successfully!')
-            return redirect('more_property_details', property_id=property_id)
+            return redirect('property_details', property_id=property_id)
     else:
         form = AdditionalPhotosForm()
     return render(request, 'add_additional_photos.html', {'form': form, 'property': property_instance})
