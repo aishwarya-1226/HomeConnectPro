@@ -1,12 +1,65 @@
 {% extends 'base.html' %}
 
-{% block title %}Add Property - Basic Information{% endblock %}
+{% block title %}Create Property - Step 1 - HomeConnect{% endblock %}
 
 {% block content %}
-<h2>Add Property - Basic Information</h2>
-<form method="post" enctype="multipart/form-data">
+<style>
+    /* Scoped Form Styles */
+    .create-property-form {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .create-property-form h2, .create-property-form h3 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .create-property-form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .create-property-form input[type="text"],
+    .create-property-form input[type="email"],
+    .create-property-form input[type="password"],
+    .create-property-form input[type="number"],
+    .create-property-form input[type="file"],
+    .create-property-form select,
+    .create-property-form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    .create-property-form button {
+        width: 100%;
+        padding: 10px;
+        background: #007bff;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .create-property-form button:hover {
+        background: #0056b3;
+    }
+</style>
+
+<h2>Create Property - Step 1</h2>
+<form class="create-property-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn">Next</button>
+    <button type="submit">Next Step</button>
 </form>
 {% endblock %}

@@ -2,6 +2,22 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser, Property, Inquiry, Review, PropertyPurchaser, Salesperson, AdditionalPhoto
 
+
+STATE_CHOICES = [
+    ('', 'Select State'),
+    ('AL', 'Alabama'), ('AK', 'Alaska'), ('AZ', 'Arizona'), ('AR', 'Arkansas'), ('CA', 'California'),
+    ('CO', 'Colorado'), ('CT', 'Connecticut'), ('DE', 'Delaware'), ('FL', 'Florida'), ('GA', 'Georgia'),
+    ('HI', 'Hawaii'), ('ID', 'Idaho'), ('IL', 'Illinois'), ('IN', 'Indiana'), ('IA', 'Iowa'),
+    ('KS', 'Kansas'), ('KY', 'Kentucky'), ('LA', 'Louisiana'), ('ME', 'Maine'), ('MD', 'Maryland'),
+    ('MA', 'Massachusetts'), ('MI', 'Michigan'), ('MN', 'Minnesota'), ('MS', 'Mississippi'),
+    ('MO', 'Missouri'), ('MT', 'Montana'), ('NE', 'Nebraska'), ('NV', 'Nevada'), ('NH', 'New Hampshire'),
+    ('NJ', 'New Jersey'), ('NM', 'New Mexico'), ('NY', 'New York'), ('NC', 'North Carolina'),
+    ('ND', 'North Dakota'), ('OH', 'Ohio'), ('OK', 'Oklahoma'), ('OR', 'Oregon'), ('PA', 'Pennsylvania'),
+    ('RI', 'Rhode Island'), ('SC', 'South Carolina'), ('SD', 'South Dakota'), ('TN', 'Tennessee'),
+    ('TX', 'Texas'), ('UT', 'Utah'), ('VT', 'Vermont'), ('VA', 'Virginia'), ('WA', 'Washington'),
+    ('WV', 'West Virginia'), ('WI', 'Wisconsin'), ('WY', 'Wyoming')
+]
+
 class UserRegistrationForm(UserCreationForm):
     phone_number = forms.CharField(max_length=15, required=True)
     office_address = forms.CharField(max_length=255, required=False)  # Make office_address optional
@@ -71,9 +87,18 @@ class ReviewForm(forms.ModelForm):
         }
 
 class PropertyBasicForm(forms.ModelForm):
+    state = forms.ChoiceField(choices=STATE_CHOICES, required=True)
+    zip_code = forms.CharField(max_length=5, required=True)
+
     class Meta:
         model = Property
-        fields = ['address', 'description', 'price', 'category', 'land_size', 'image']
+        fields = ['state', 'zip_code', 'address', 'description', 'price', 'category', 'land_size', 'image']
+
+    def clean_zip_code(self):
+        zip_code = self.cleaned_data.get('zip_code')
+        if not zip_code.isdigit() or len(zip_code) != 5:
+            raise forms.ValidationError("Zip code must be exactly 5 digits.")
+        return zip_code
 
 class PropertyAdditionalForm(forms.ModelForm):
     class Meta:
