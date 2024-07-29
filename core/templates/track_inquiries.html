@@ -66,7 +66,10 @@
                         <td>{{ inquiry.status }}</td>
                         <td>{{ inquiry.total_price|default:"None" }}</td>
                         <td>{{ inquiry.response|default:"None" }}</td>
-                        <td>{{ inquiry.created_at|date:"F j, Y, g:i a" }}</td>
+                        <td>{{ inquiry.created_at|date:"F j, Y, g:i a" }} <!-- Debug print statement -->
+                       
+                        
+                        </td>
                         <td><a href="{% url 'inquiry_detail' inquiry.id %}">View Details</a></td>
                     </tr>
                 {% endfor %}

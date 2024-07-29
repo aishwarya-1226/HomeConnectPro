@@ -30,6 +30,7 @@ urlpatterns = [
     path('properties/<int:property_id>/reviews/create/', views.create_review, name='create_review'),
     path('property_purchaser/reviews/', views.property_purchaser_reviews, name='property_purchaser_reviews'),
     path('properties/<int:property_id>/track_inquiries/', views.track_inquiries, name='track_inquiries'),
+    path('approve-users/', views.approve_users, name='approve_users'),
 
 ]
 

@@ -11,6 +11,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.contrib.admin.views.decorators import staff_member_required  # Import the decorator
+from django.db import IntegrityError
+
+
 
 
 
@@ -19,6 +23,10 @@ def landing(request):
     return render(request, 'landing.html')
 
 def home(request):
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            return redirect('approve_users')  # Redirect staff to the user approval page
+        query = request.GET.get('query', '')
     query = request.GET.get('query', '')
     if query:
         properties = Property.objects.filter(
@@ -67,26 +75,45 @@ def signup(request):
             try:
                 user = form.save(commit=False)
                 user.set_password(form.cleaned_data['password1'])
+                
+                # Only deactivate accounts for salesperson and property purchaser
+                if user.user_role in ['salesperson', 'property_purchaser']:
+                    user.is_active = False
+                else:
+                    user.is_active = True
+
                 user.save()
 
                 if user.user_role == 'property_purchaser':
                     PropertyPurchaser.objects.create(
                         user=user,
-                        phone_number='1234567890',  # Placeholder values
-                        specialties='Residential',  # Placeholder values
-                        service_areas='New York'  # Placeholder values
+                        phone_number=form.cleaned_data['phone_number'],
+                        specialties='Specify some default specialties',  # Placeholder value
+                        service_areas='Specify some default service areas'  # Placeholder value
+                    )
+                elif user.user_role == 'salesperson':
+                    Salesperson.objects.create(
+                        user=user,
+                        license_number='Specify some default license number'  # Placeholder value
                     )
 
-                login(request, user)
-                messages.success(request, 'Successfully signed up!')
-                return redirect('home')  # Redirect to home after signup
+                if user.is_active:
+                    login(request, user)
+                    messages.success(request, 'Successfully signed up!')
+                else:
+                    messages.success(request, 'Successfully signed up! Please wait for admin approval.')
+                
+                return redirect('home')
             except IntegrityError:
                 messages.error(request, 'Username already exists. Please choose a different username.')
         else:
             messages.error(request, 'Failed to sign up. Please check the form for errors.')
+            for field, errors in form.errors.items():
+                messages.error(request, f"{field}: {errors}")
     else:
         form = UserRegistrationForm()
     return render(request, 'signup.html', {'form': form})
+
 @login_required
 def profile(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
@@ -365,3 +392,15 @@ def track_inquiries(request, property_id):
     inquiries = Inquiry.objects.filter(property=property)
 
     return render(request, 'track_inquiries.html', {'inquiries': inquiries, 'property_id': property_id})
+
+
+
+@staff_member_required
+def approve_users(request):
+    users = CustomUser.objects.filter(is_active=False)
+    if request.method == 'POST':
+        user_ids = request.POST.getlist('approve')
+        CustomUser.objects.filter(id__in=user_ids).update(is_active=True)
+        messages.success(request, 'Selected users have been approved.')
+        return redirect('approve_users')
+    return render(request, 'approve_users.html', {'users': users})

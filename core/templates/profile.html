@@ -1,12 +1,76 @@
-<!-- core/templates/profile.html -->
 {% extends 'base.html' %}
 
 {% block title %}Profile - HomeConnect{% endblock %}
 
 {% block content %}
-<h2>Profile</h2>
-<p>Username: {{ user.username }}</p>
-<p>Email: {{ user.email }}</p>
-<p>Role: {{ user.get_user_role_display }}</p>
-<p>Address: {{ user.address }}</p>
+<style>
+    .profile-container {
+        width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .profile-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    .profile-container .profile-detail {
+        margin-bottom: 15px;
+    }
+
+    .profile-container .profile-detail label {
+        font-weight: bold;
+        display: inline-block;
+        width: 150px;
+    }
+
+    .profile-container .profile-detail span {
+        display: inline-block;
+        color: #555;
+    }
+</style>
+
+<div class="profile-container">
+    <h2>Profile</h2>
+    <div class="profile-detail">
+        <label>Username:</label>
+        <span>{{ user.username }}</span>
+    </div>
+    <div class="profile-detail">
+        <label>Email:</label>
+        <span>{{ user.email }}</span>
+    </div>
+    <div class="profile-detail">
+        <label>Role:</label>
+        <span>{{ user.get_user_role_display }}</span>
+    </div>
+    <div class="profile-detail">
+        <label>Phone Number:</label>
+        <span>{{ user.phone_number }}</span>
+    </div>
+    {% if user.user_role == 'salesperson' or user.user_role == 'property_purchaser' %}
+    <div class="profile-detail">
+        <label>Office Address:</label>
+        <span>{{ user.office_address }}</span>
+    </div>
+    {% endif %}
+    {% if user.user_role == 'property_purchaser' %}
+    <div class="profile-detail">
+        <label>Specialties:</label>
+        <span>{{ user.propertypurchaser.specialties }}</span>
+    </div>
+    <div class="profile-detail">
+        <label>Service Areas:</label>
+        <span>{{ user.propertypurchaser.service_areas }}</span>
+    </div>
+    {% elif user.user_role == 'salesperson' %}
+    
+    {% endif %}
+</div>
 {% endblock %}

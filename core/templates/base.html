@@ -100,15 +100,20 @@
                 <span>Welcome, {{ user.username }}</span>
                 <a href="{% url 'profile' user.id %}">Profile</a>
                 <a href="{% url 'logout' %}">Logout</a>
-                {% if user.user_role == 'property_purchaser' %}
-                    <a href="{% url 'create_property_step1' %}">Add New Listing</a>
-                    <a href="{% url 'inquiry_list' %}">View Inquiries</a>
-                {% endif %}
-                {% if user.user_role == 'salesperson' %}
-                    <a href="{% url 'inquiry_list' %}">View Inquiries</a>
-                {% endif %}
-                {% if user.user_role == 'client' %}
-                    <a href="{% url 'inquiry_list' %}">Track Inquiries</a>
+                {% if not user.is_superuser %}
+                    {% if user.user_role == 'property_purchaser' %}
+                        <a href="{% url 'create_property_step1' %}">Add New Listing</a>
+                        <a href="{% url 'inquiry_list' %}">View Inquiries</a>
+                    {% endif %}
+                    {% if user.user_role == 'salesperson' %}
+                        <a href="{% url 'inquiry_list' %}">View Inquiries</a>
+                    {% endif %}
+                    {% if user.user_role == 'client' %}
+                        <a href="{% url 'inquiry_list' %}">Track Inquiries</a>
+                    {% endif %}
+                {% else %}
+                    <!-- Admin-specific links can go here -->
+                    <a href="{% url 'admin:index' %}">Admin Dashboard</a>
                 {% endif %}
             {% else %}
                 <a href="{% url 'signup' %}">Register</a>

@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from datetime import datetime
+from django.utils import timezone
+
 
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
@@ -10,7 +12,8 @@ class CustomUser(AbstractUser):
         ('salesperson', 'Salesperson'),
     )
     user_role = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='client')
-    address = models.CharField(max_length=255, null=True, blank=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    office_address = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.username
@@ -42,6 +45,7 @@ class Property(models.Model):
     year_built = models.CharField(max_length=4, null=True, blank=True)
     zip_code = models.CharField(max_length=5, null=True, blank=True)  # Ensure zip code is 5 digits
     state = models.CharField(max_length=2, null=True, blank=True)  # State abbreviation
+
     def __str__(self):
         return self.address
 
@@ -58,6 +62,8 @@ class Inquiry(models.Model):
     estimated_closing_time = models.DateTimeField(null=True, blank=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     response = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)  # Automatically set the field to now when the object is first created
+
 
     def __str__(self):
         return f"Inquiry for {self.property.address} by {self.client.username}"

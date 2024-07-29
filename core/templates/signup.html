@@ -1,15 +1,121 @@
-<!-- core/templates/signup.html -->
 {% extends 'base.html' %}
 
 {% block title %}Sign Up - HomeConnect{% endblock %}
 
 {% block content %}
+<style>
+    .signup-container {
+        width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .signup-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    .signup-container form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .signup-container form .form-group {
+        margin-bottom: 15px;
+    }
+
+    .signup-container form .form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .signup-container form .form-group input,
+    .signup-container form .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    .signup-container form button {
+        padding: 10px;
+        background-color: #5cb85c;
+        border: none;
+        border-radius: 3px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .signup-container form button:hover {
+        background-color: #4cae4c;
+    }
+</style>
+
 <div class="signup-container">
     <h2>Sign Up</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Sign Up</button>
+        <div class="form-group">
+            <label for="id_username">Username:</label>
+            {{ form.username }}
+        </div>
+        <div class="form-group">
+            <label for="id_email">Email:</label>
+            {{ form.email }}
+        </div>
+        <div class="form-group">
+            <label for="id_password1">Password:</label>
+            {{ form.password1 }}
+        </div>
+        <div class="form-group">
+            <label for="id_password2">Confirm Password:</label>
+            {{ form.password2 }}
+        </div>
+        <div class="form-group">
+            <label for="id_user_role">User Role:</label>
+            {{ form.user_role }}
+        </div>
+        <div class="form-group">
+            <label for="id_phone_number">Phone Number:</label>
+            {{ form.phone_number }}
+        </div>
+        <div class="form-group" id="office_address_field" style="display: none;">
+            <label for="id_office_address">Office Address:</label>
+            {{ form.office_address }}
+        </div>
+        <button type="submit" id="signup-button">Sign Up</button>
     </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const userRoleField = document.getElementById('id_user_role');
+        const officeAddressField = document.getElementById('office_address_field');
+        const signupButton = document.getElementById('signup-button');
+
+        function toggleOfficeAddress() {
+            const userRole = userRoleField.value;
+            if (userRole === 'salesperson' || userRole === 'property_purchaser') {
+                officeAddressField.style.display = 'block';
+            } else {
+                officeAddressField.style.display = 'none';
+            }
+        }
+
+        userRoleField.addEventListener('change', toggleOfficeAddress);
+        toggleOfficeAddress();  // Initial check
+
+        signupButton.addEventListener('click', function(event) {
+            console.log('Signup button clicked');
+        });
+    });
+</script>
 {% endblock %}
