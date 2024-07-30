@@ -16,7 +16,6 @@ SECRET_KEY = 'django-insecure-u699ckerc93q^+)eq(k3+e1hv_%1wa6+54u-zkkj!(pic4xdq8
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Application definition
 
