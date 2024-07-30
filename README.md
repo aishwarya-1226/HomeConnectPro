@@ -51,7 +51,7 @@ Register and Log In:
 Register a new account and log in to access the application's features.
 
 Property Management:
-Property Purchasers and Salespersons can list new properties and manage existing listings.
+Property Purchasers can list new properties and manage existing listings.
 
 Inquiries:
 Clients can create inquiries about properties, and Salespersons can respond to these inquiries.
