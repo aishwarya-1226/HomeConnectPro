@@ -47,13 +47,14 @@
         <tr>
             <th>Property Address</th>
             <th>Status</th>
-            <th>Client Name</th>
+            {% if user_role != 'client' %}
+                <th>Client Name</th>
+            {% endif %}
             <th>Offer</th>
             <th>Availability</th>
             <th>Timeline</th>
             <th>Date</th>
             <th>Details</th>
-
         </tr>
     </thead>
     <tbody>
@@ -61,13 +62,14 @@
         <tr>
             <td>{{ inquiry.property.address }}</td>
             <td>{{ inquiry.status }}</td>
-            <td>{{ inquiry.client.username }}</td>
+            {% if user_role != 'client' %}
+                <td>{{ inquiry.client.username }}</td>
+            {% endif %}
             <td>${{ inquiry.offer }}</td>
             <td>{{ inquiry.availability }}</td>
             <td>{{ inquiry.timeline }}</td>
-            <td>{{ inquiry.created_at|date:"F j, Y, g:i a" }} <!-- Debug print statement -->
+            <td>{{ inquiry.created_at|date:"F j, Y, g:i a" }}</td>
             <td><a href="{% url 'inquiry_detail' inquiry.id %}" class="btn">View Details</a></td>
-            
         </tr>
         {% endfor %}
     </tbody>
