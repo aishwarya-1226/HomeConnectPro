@@ -57,7 +57,7 @@ def login_view(request):
                 next_url = request.GET.get('next', 'home')  # Get the next URL or default to 'home'
                 return redirect(next_url)
             else:
-                messages.error(request, 'Invalid username or password')
+                messages.error(request, 'Invalid username/password')
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
@@ -65,7 +65,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    messages.success(request, 'Successfully logged out!')
+    messages.success(request, 'Success log out!')
     return redirect('home')  # Redirect to home after logout
 
 def signup(request):
