@@ -7,3 +7,4 @@ packaging==24.1
 asgiref>=3.3.2,<4
 pytz
 sqlparse>=0.2.2
+geopy==2.3.0

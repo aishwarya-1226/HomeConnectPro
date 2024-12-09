@@ -62,6 +62,8 @@ class Migration(migrations.Migration):
                 ('land_size', models.DecimalField(decimal_places=2, max_digits=10)),
                 ('image', models.ImageField(blank=True, null=True, upload_to='property_images')),
                 ('property_purchaser', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.propertypurchaser')),
+                ('latitude', models.FloatField(null=True, blank=True)),
+                ('longitude', models.FloatField(null=True, blank=True)),
             ],
         ),
         migrations.CreateModel(

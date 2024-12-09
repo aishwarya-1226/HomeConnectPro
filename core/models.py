@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from datetime import datetime
 from django.utils import timezone
+from geopy.geocoders import Nominatim
+
 
 
 class CustomUser(AbstractUser):
@@ -45,6 +47,22 @@ class Property(models.Model):
     year_built = models.CharField(max_length=4, null=True, blank=True)
     zip_code = models.CharField(max_length=5, null=True, blank=True)  # Ensure zip code is 5 digits
     state = models.CharField(max_length=2, null=True, blank=True)  # State abbreviation
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.address and not self.latitude and not self.longitude:
+            geolocator = Nominatim(user_agent="myapp_geocoder")
+            try:
+                location = geolocator.geocode(self.address)
+                if location:
+                    self.latitude = location.latitude
+                    self.longitude = location.longitude
+            except Exception as e:
+                # Log or handle the error as appropriate
+                print(f"Error geocoding address {self.address}: {e}")
+    
+        super(Property, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.address
