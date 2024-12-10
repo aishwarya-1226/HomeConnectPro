@@ -23,21 +23,21 @@ jobs:
     - name: install SSH key 
       uses: shimataro/ssh-key-action@v2
       with: 
-        key: ${{ secrets.EC2_SSH_KEY}}
-        known_hosts: ${{ secrets.EC2_HOSTS }}
+        key: ${{ secrets.AWS_SSH_PRIVATE_KEY}}
+        known_hosts: ${{ secrets.EC2_IP }}
 
     - name: deploying in ec2
       env:
-          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          PRIVATE_KEY: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
       run: |
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        ssh -o StrictHostKeyChecking=no -i private_key ubuntu@18.117.168.125 << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{ secrets.EC2_IP }} << 'EOF'
           sudo docker stop myhomecontainer || true
           sudo docker rm myhomecontainer || true
           rm -rf ASP_HomeConnect
-          git clone https://github.com/lxa54790/ASP_HomeConnect.git
+          git clone https://github.com/aishwarya-1226/HomeConnectPro.git
           ls -lrt
-          cd ASP_HomeConnect
+          cd HomeConnectPro
           git checkout main
           sudo docker build -t myhome:${{ github.run_number }} .
           sudo docker images
