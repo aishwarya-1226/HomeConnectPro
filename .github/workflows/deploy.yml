@@ -37,7 +37,7 @@ jobs:
           rm -rf ASP_HomeConnect
           git clone https://github.com/aishwarya-1226/HomeConnectPro.git
           ls -lrt
-          cd ASP_HomeConnect
+          cd HomeConnectPro
           git checkout main
           sudo docker build -t myhome:${{ github.run_number }} .
           sudo docker images
