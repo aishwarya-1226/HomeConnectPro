@@ -51,16 +51,21 @@ class Property(models.Model):
     longitude = models.FloatField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
+        full_address = self.address
+        if self.state:
+            full_address += f", {self.state}"
+        if self.zip_code:
+            full_address += f" {self.zip_code}"
         if self.address and not self.latitude and not self.longitude:
             geolocator = Nominatim(user_agent="myapp_geocoder")
             try:
-                location = geolocator.geocode(self.address)
+                location = geolocator.geocode(full_address)
                 if location:
                     self.latitude = location.latitude
                     self.longitude = location.longitude
             except Exception as e:
                 # Log or handle the error as appropriate
-                print(f"Error geocoding address {self.address}: {e}")
+                print(f"Error geocoding address {full_address}: {e}")
     
         super(Property, self).save(*args, **kwargs)
 
