@@ -2,7 +2,8 @@ name: 'Deployment'
 
 on:
   push:
-    branches: [ "main" ]
+    branches: 
+      - "main"
 
 permissions:
   contents: read
@@ -12,35 +13,47 @@ permissions:
 jobs:
   build:
     name: 'deployment'
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     environment: production
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: checkout 
-      uses: actions/checkout@v2
+      - name: Setup SSH key
+        run: |
+          echo "${{ secrets.AWS_SSH_PRIVATE_KEY }}" > private_key
+          chmod 600 private_key
 
-    - name: install SSH key 
-      uses: shimataro/ssh-key-action@v2
-      with: 
-        key: ${{ secrets.AWS_SSH_PRIVATE_KEY}}
-        known_hosts: ${{ secrets.EC2_IP }}
+      - name: Add EC2 host to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.EC2_IP }} >> ~/.ssh/known_hosts
 
-    - name: deploying in ec2
-      env:
-          PRIVATE_KEY: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
-      run: |
-        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{ secrets.EC2_IP }} << 'EOF'
-          sudo docker stop myhomecontainer || true
-          sudo docker rm myhomecontainer || true
-          rm -rf HomeConnectPro
-          git clone https://github.com/aishwarya-1226/HomeConnectPro.git
-          ls -lrt
-          cd HomeConnectPro
-          git checkout main
-          sudo docker build -t myhome:${{ github.run_number }} .
-          sudo docker images
-          sudo docker run --name myhomecontainer -d -p 5000:8000 myhome:${{ github.run_number }}
-          sudo docker ps
-        EOF
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{ secrets.EC2_IP }} << 'EOF'
+            # Stop and remove existing container
+            sudo docker stop myhomecontainer || true
+            sudo docker rm myhomecontainer || true
+
+            # Remove old repository and clone the latest code
+            rm -rf HomeConnectPro
+            git clone https://github.com/aishwarya-1226/HomeConnectPro.git
+            ls -lrt
+            cd HomeConnectPro
+            git checkout main
+
+            # Build and run the Docker container
+            sudo docker build -t myhome:${{ github.run_number }} .
+            sudo docker images
+            sudo docker run --name myhomecontainer -d -p 5000:8000 myhome:${{ github.run_number }}
+            sudo docker ps
+
+            # Cleanup
+            rm -f private_key
+          EOF
+
+      - name: Cleanup
+        run: |
+          rm -f private_key
