@@ -51,28 +51,33 @@ class Property(models.Model):
     longitude = models.FloatField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        full_address = self.address
-        if self.state:
-            full_address += f", {self.state}"
-        if self.zip_code:
-            full_address += f" {self.zip_code}"
-        if self.address and not self.latitude and not self.longitude:
-            geolocator = Nominatim(user_agent="myapp_geocoder")
-            try:
-                location = geolocator.geocode(full_address)
-                if location:
-                    self.latitude = location.latitude
-                    self.longitude = location.longitude
-            except Exception as e:
-                # Log or handle the error as appropriate
-                print(f"Error geocoding address {full_address}: {e}")
+        if self.is_address_changed():
+            full_address = self.address
+            if self.state:
+                full_address += f", {self.state}"
+            if self.zip_code:
+                full_address += f" {self.zip_code}"
+                
+                geolocator = Nominatim(user_agent="myapp_geocoder")
+                try:
+                    location = geolocator.geocode(full_address)
+                    if location:
+                        self.latitude = location.latitude
+                        self.longitude = location.longitude
+                    else:
+                    print(f"Geocoding failed for address: {full_address}")
+                except Exception as e:
+                    # Log or handle the error as appropriate
+                    print(f"Error geocoding address {full_address}: {e}")
     
         super(Property, self).save(*args, **kwargs)
     
     def is_address_changed(self):
         """Helper method to check if address, state, or zip code has been modified by comparing the current value with the original value."""
-        original = self.__class__.objects.get(pk=self.pk)
-        return original.address != self.address or original.state != self.state or original.zip_code != self.zip_code
+        if self.pk: 
+            original = self.__class__.objects.get(pk=self.pk)
+            return (original.address != self.address or original.state != self.state or original.zip_code != self.zip_code)
+        return True
 
     def __str__(self):
         return self.address
