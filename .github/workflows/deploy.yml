@@ -34,7 +34,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{ secrets.EC2_IP }} << 'EOF'
           sudo docker stop myhomecontainer || true
           sudo docker rm myhomecontainer || true
-          rm -rf ASP_HomeConnect
+          rm -rf HomeConnectPro
           git clone https://github.com/aishwarya-1226/HomeConnectPro.git
           ls -lrt
           cd HomeConnectPro
