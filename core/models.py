@@ -65,7 +65,7 @@ class Property(models.Model):
                         self.latitude = location.latitude
                         self.longitude = location.longitude
                     else:
-                    print(f"Geocoding failed for address: {full_address}")
+                        print(f"Geocoding failed for address: {full_address}")
                 except Exception as e:
                     # Log or handle the error as appropriate
                     print(f"Error geocoding address {full_address}: {e}")
