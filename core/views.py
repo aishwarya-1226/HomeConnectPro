@@ -14,11 +14,6 @@ from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required  # Import the decorator
 from django.db import IntegrityError
 
-
-
-
-
-
 def landing(request):
     return render(request, 'landing.html')
 
@@ -153,10 +148,14 @@ def property_list(request):
 def property_detail(request, property_id):
     property_instance = get_object_or_404(Property, id=property_id)
     user_role = request.user.user_role if request.user.is_authenticated else None
+    latitude = property_instance.latitude
+    longitude = property_instance.longitude
 
     return render(request, 'property_detail.html', {
         'property': property_instance,
-        'user_role': user_role
+        'user_role': user_role,
+        'latitude': latitude,
+        'longitude': longitude
     })
 
 @login_required

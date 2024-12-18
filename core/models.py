@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models # type: ignore
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from datetime import datetime
@@ -68,6 +68,11 @@ class Property(models.Model):
                 print(f"Error geocoding address {full_address}: {e}")
     
         super(Property, self).save(*args, **kwargs)
+    
+    def is_address_changed(self):
+        """Helper method to check if address, state, or zip code has been modified by comparing the current value with the original value."""
+        original = self.__class__.objects.get(pk=self.pk)
+        return original.address != self.address or original.state != self.state or original.zip_code != self.zip_code
 
     def __str__(self):
         return self.address

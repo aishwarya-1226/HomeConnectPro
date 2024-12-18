@@ -233,3 +233,17 @@ th {
 .btn:hover {
     background-color: #0056b3;
 }
+#map {
+    height: 400px; /* Set a fixed height for the map */
+    width: 100%;   /* Make the map span full width */
+    border-radius: 8px; /* Optional: rounded corners for the map */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: add a light shadow for depth */
+    margin-top: 20px; /* Optional: space above the map */
+}
+
+.map-container {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+}
