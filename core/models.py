@@ -3,9 +3,11 @@ from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from datetime import datetime
 from django.utils import timezone
-from geopy.geocoders import Nominatim
+from geopy.geocoders import GoogleV3
+from geopy.exc import GeocoderTimedOut  
+import logging
 
-
+GOOGLE_API_KEY ='AIzaSyAOcYGAH1Ye5f0nRxF6YJjdLlHycdSrVQw'
 
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
@@ -58,17 +60,19 @@ class Property(models.Model):
             if self.zip_code:
                 full_address += f" {self.zip_code}"
                 
-                geolocator = Nominatim(user_agent="myapp_geocoder")
+                geolocator = GoogleV3(api_key=GOOGLE_API_KEY)
                 try:
                     location = geolocator.geocode(full_address)
                     if location:
                         self.latitude = location.latitude
                         self.longitude = location.longitude
                     else:
-                        print(f"Geocoding failed for address: {full_address}")
+                        logging.warning(f"Geocoding failed for address: {full_address}")
+                except GeocoderTimedOut:
+                    logging.error(f"Google Maps geocoding API timed out for address: {full_address}")
                 except Exception as e:
                     # Log or handle the error as appropriate
-                    print(f"Error geocoding address {full_address}: {e}")
+                    logging.error(f"Error geocoding address {full_address}: {e}")
     
         super(Property, self).save(*args, **kwargs)
     
