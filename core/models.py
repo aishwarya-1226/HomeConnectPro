@@ -1,4 +1,4 @@
-from django.db import models # type: ignore
+from django.contrib.gis.db import models # type: ignore
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from datetime import datetime
@@ -6,6 +6,8 @@ from django.utils import timezone
 from geopy.geocoders import GoogleV3
 from geopy.exc import GeocoderTimedOut  
 import logging
+from django.contrib.gis.geos import Point
+
 
 GOOGLE_API_KEY ='AIzaSyAOcYGAH1Ye5f0nRxF6YJjdLlHycdSrVQw'
 
@@ -51,6 +53,7 @@ class Property(models.Model):
     state = models.CharField(max_length=2, null=True, blank=True)  # State abbreviation
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
+    location = models.PointField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if self.is_address_changed():
@@ -73,7 +76,8 @@ class Property(models.Model):
                 except Exception as e:
                     # Log or handle the error as appropriate
                     logging.error(f"Error geocoding address {full_address}: {e}")
-    
+        if self.latitude is not None and self.longitude is not None:
+            self.location = Point(self.longitude, self.latitude)
         super(Property, self).save(*args, **kwargs)
     
     def is_address_changed(self):

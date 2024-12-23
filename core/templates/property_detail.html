@@ -65,9 +65,11 @@
 
 <h3>Location</h3>
 {% if latitude and longitude %}
-    <div id="map" style="height: 400px; width: 100%;"></div>
+<div class="map-container" style="display: block; width: 100%; margin: 0 auto; position: relative;">
+    <div id="map" style="height: 400px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-top: 20px;"></div>
+</div>
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOcYGAH1Ye5f0nRxF6YJjdLlHycdSrVQw&callback=initMap">
     </script>
     <script>
         function initMap() {

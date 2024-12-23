@@ -13,6 +13,9 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required  # Import the decorator
 from django.db import IntegrityError
+from django.http import JsonResponse
+from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import D
 
 def landing(request):
     return render(request, 'landing.html')
@@ -22,13 +25,21 @@ def home(request):
         if request.user.is_staff:
             return redirect('approve_users')  # Redirect staff to the user approval page
         query = request.GET.get('query', '')
-    query = request.GET.get('query', '')
-    if query:
-        properties = Property.objects.filter(
-            Q(description__icontains=query) |
-            Q(address__icontains=query) |
-            Q(category__icontains=query)
-        )
+        state = request.GET.get('state', '')
+        zip_code = request.GET.get('zip_code', '')
+    
+        filters = Q()
+    
+        # Apply filters based on user input (query, state, or zip code)
+        if query:
+            filters &= (Q(address__icontains=query) | Q(description__icontains=query) | Q(category__icontains=query))
+        if zip_code:
+            filters &= Q(zip_code=zip_code)
+        if state:
+            filters &= Q(state=state)
+
+        # Get properties based on filters
+        properties = Property.objects.filter(filters) if filters else Property.objects.all()
     else:
         properties = Property.objects.all()
     
@@ -241,7 +252,7 @@ def review_list(request):
 
 def search(request):
     query = request.GET.get('query', '')
-    zip_code = request.GET.get('zipcode', '')
+    zip_code = request.GET.get('zip_code', '')
     state = request.GET.get('state', '')
 
     filters = Q()
@@ -257,9 +268,29 @@ def search(request):
     return render(request, 'search.html', {
         'properties': properties,
         'query': query,
-        'zipcode': zip_code,
+        'zip_code': zip_code,
         'state': state
     })
+
+def get_properties_nearby(request):
+    lat = float(request.GET.get('lat'))
+    lng = float(request.GET.get('lng'))
+    radius = float(request.GET.get('radius', 3))  # Default to 3 miles
+
+    user_location = Point(lng, lat)
+    
+    nearby_properties = Property.objects.filter(location__distance_lte=(user_location, D(miles=radius)))
+    
+    properties_data  = [
+        {
+            'address': property.address,
+            'latitude': property.latitude,
+            'longitude': property.longitude,
+        }
+        for property in nearby_properties
+    ]
+    
+    return JsonResponse(properties_data, safe=False)
 
 @login_required
 def update_profile(request):
