@@ -31,7 +31,6 @@ urlpatterns = [
     path('property_purchaser/reviews/', views.property_purchaser_reviews, name='property_purchaser_reviews'),
     path('properties/<int:property_id>/track_inquiries/', views.track_inquiries, name='track_inquiries'),
     path('approve-users/', views.approve_users, name='approve_users'),
-    path('get_properties_nearby/', views.get_properties_nearby, name='get_properties_nearby'),
 
 ]
 

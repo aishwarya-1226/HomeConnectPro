@@ -16,6 +16,8 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
+from geopy.distance import geodesic
+import googlemaps
 
 def landing(request):
     return render(request, 'landing.html')
@@ -26,7 +28,7 @@ def home(request):
             return redirect('approve_users')  # Redirect staff to the user approval page
         query = request.GET.get('query', '')
         state = request.GET.get('state', '')
-        zip_code = request.GET.get('zip_code', '')
+        zip_code = request.GET.get('zipcode', '')
     
         filters = Q()
     
@@ -249,13 +251,15 @@ def review_list(request):
     return render(request, 'review_list.html', {'reviews': reviews})
 
 
-
 def search(request):
     query = request.GET.get('query', '')
-    zip_code = request.GET.get('zip_code', '')
+    zip_code = request.GET.get('zipcode', '')
     state = request.GET.get('state', '')
 
     filters = Q()
+
+    gmaps = googlemaps.Client(key='AIzaSyAOcYGAH1Ye5f0nRxF6YJjdLlHycdSrVQw')
+
     if query:
         filters &= Q(address__icontains=query) | Q(description__icontains=query) | Q(category__icontains=query)
     if zip_code:
@@ -263,7 +267,29 @@ def search(request):
     if state:
         filters &= Q(state=state)
 
-    properties = Property.objects.filter(filters) if filters else Property.objects.none()
+    properties = Property.objects.filter(filters)
+
+    if not properties:  # If no results found based on filters, search within 3-mile radius
+        # Get the latitude and longitude of the provided ZIP code using Google Maps Geocoding API
+        geocode_result = gmaps.geocode(zip_code)
+
+        if geocode_result:
+            # Extract the latitude and longitude from the geocoding result
+            location = geocode_result[0]['geometry']['location']
+            user_location = (location['lat'], location['lng'])
+
+            # Fetch all properties for distance calculation
+            properties = Property.objects.all()
+
+            nearby_properties = []
+            for property in properties:
+                property_location = (property.latitude, property.longitude)
+                distance = geodesic(user_location, property_location).miles
+
+                if distance <= 3:  # Check if the property is within 3 miles
+                    nearby_properties.append(property)
+
+            properties = nearby_properties
 
     return render(request, 'search.html', {
         'properties': properties,
@@ -271,26 +297,6 @@ def search(request):
         'zip_code': zip_code,
         'state': state
     })
-
-def get_properties_nearby(request):
-    lat = float(request.GET.get('lat'))
-    lng = float(request.GET.get('lng'))
-    radius = float(request.GET.get('radius', 3))  # Default to 3 miles
-
-    user_location = Point(lng, lat)
-    
-    nearby_properties = Property.objects.filter(location__distance_lte=(user_location, D(miles=radius)))
-    
-    properties_data  = [
-        {
-            'address': property.address,
-            'latitude': property.latitude,
-            'longitude': property.longitude,
-        }
-        for property in nearby_properties
-    ]
-    
-    return JsonResponse(properties_data, safe=False)
 
 @login_required
 def update_profile(request):

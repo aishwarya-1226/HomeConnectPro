@@ -6,6 +6,69 @@
 <h2>Search Results</h2>
 
 {% if properties %}
+    <!-- Map for all properties -->
+    <div class="map-container" style="height: 400px; width: 100%;">
+        <div id="map" style="height: 100%; width: 100%;"></div>
+    </div>
+
+    <script>
+        function initMap() {
+            // Calculate the average latitude and longitude of all properties
+            var totalLat = 0;
+            var totalLng = 0;
+            var propertiesCount = {{ properties|length }};
+            
+            // Create an empty array to store the markers
+            var markers = [];
+
+            {% for property in properties %}
+                totalLat += {{ property.latitude }};
+                totalLng += {{ property.longitude }};
+
+                // Create a marker for each property
+                var marker = {
+                    position: { lat: {{ property.latitude }}, lng: {{ property.longitude }} },
+                    title: "{{ property.address }}",
+                    infoWindowContent: "<strong>{{ property.address }}</strong><br>{{ property.description }}<br>Price: ${{ property.price }}"
+                };
+
+                // Push the marker to the markers array
+                markers.push(marker);
+            {% endfor %}
+
+            // Calculate average latitude and longitude
+            var avgLat = totalLat / propertiesCount;
+            var avgLng = totalLng / propertiesCount;
+
+            // Create a new map centered at the average location
+            var map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 7,  // Adjust zoom level as needed
+                center: { lat: avgLat, lng: avgLng },  // Centered at the average location of all properties
+            });
+
+            // Add a marker for each property
+            markers.forEach(function(marker) {
+                var googleMarker = new google.maps.Marker({
+                    position: marker.position,
+                    map: map,
+                    title: marker.title
+                });
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: marker.infoWindowContent
+                });
+
+                googleMarker.addListener("click", function() {
+                    infowindow.open(map, googleMarker);
+                });
+            });
+        }
+
+        // Initialize the map when the page loads
+        google.maps.event.addDomListener(window, "load", initMap);
+    </script>
+
+    <!-- Property list -->
     <div class="property-list">
         {% for property in properties %}
             <div class="property">
@@ -22,6 +85,10 @@
             </div>
         {% endfor %}
     </div>
+
+    <!-- Load the Google Maps API once -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOcYGAH1Ye5f0nRxF6YJjdLlHycdSrVQw&callback=initMap" async defer></script>
+
 {% else %}
     <p>No matches for the provided filters.</p>
 {% endif %}

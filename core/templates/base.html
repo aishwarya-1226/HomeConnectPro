@@ -21,131 +21,66 @@
             width: 100%;
         }
     </style>
-    <script>
-        function initMap() {
-            const map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 37.7749, lng: -122.4194 },  // Default to San Francisco
-                zoom: 12,
-            });
-
-            const geocoder = new google.maps.Geocoder();
-
-            document.getElementById('property-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const address = document.getElementById("address").value;
-                const state = document.getElementById("state").value;
-                const zipCode = document.getElementById("zip_code").value;
-
-                if (address && state && zipCode) {
-                    const fullAddress = address + ", " + state + " " + zipCode;
-                    geocodeAddress(geocoder, map, fullAddress);
-                } else {
-                    // If address or state is not provided, use only zip code
-                    const zipCode = document.getElementById("zip_code").value;
-                    if (zipCode) {
-                        geocodeZipCode(geocoder, map, zipCode);
-                    } else {
-                        // If no zip code is provided, use the default location
-                        showNearbyProperties(map, { lat: 37.7749, lng: -122.4194 }); // Default San Francisco coordinates
-                    }
-                }
-            });
-
-            function geocodeAddress(geocoder, map, fullAddress) {
-                geocoder.geocode({ 'address': fullAddress }, (results, status) => {
-                    if (status === 'OK') {
-                        const location = results[0].geometry.location;
-                        map.setCenter(location);
-
-                        const marker = new google.maps.Marker({
-                            map: map,
-                            position: location,
-                        });
-
-                        const infowindow = new google.maps.InfoWindow({
-                            content: `<div><strong>${fullAddress}</strong></div>`,
-                        });
-                        infowindow.open(map, marker);
-
-                        // Fetch properties based on geocoded address
-                        fetchNearbyProperties(map, location);
-                    } else {
-                        // If geocoding fails, fall back to zip code geocoding
-                        geocodeZipCode(geocoder, map, document.getElementById("zip_code").value);
-                    }
-                });
-            }
-
-            function geocodeZipCode(geocoder, map, zipCode) {
-                geocoder.geocode({ 'address': zipCode }, (results, status) => {
-                    if (status === 'OK') {
-                        const location = results[0].geometry.location;
-                        map.setCenter(location);
-
-                        const marker = new google.maps.Marker({
-                            map: map,
-                            position: location,
-                        });
-
-                        const infowindow = new google.maps.InfoWindow({
-                            content: `<div><strong>Zip Code: ${zipCode}</strong></div>`,
-                        });
-                        infowindow.open(map, marker);
-
-                        // Fetch properties based on zip code location
-                        fetchNearbyProperties(map, location);
-                    } else {
-                        alert("Zip Code not found. Showing properties from default location.");
-                        // Show properties within 3-mile radius of default location if zip code not found
-                        showNearbyProperties(map, { lat: 37.7749, lng: -122.4194 });
-                    }
-                });
-            }
-
-            function fetchNearbyProperties(map, location) {
-                // Make an AJAX call to the backend to fetch properties within 3 miles
-                const lat = location.lat();
-                const lng = location.lng();
-
-                fetch(`/get_properties_nearby/?lat=${lat}&lng=${lng}&radius=3`)
-                    .then(response => response.json())
-                    .then(properties => {
-                        if (properties.length > 0) {
-                            properties.forEach(property => {
-                                const marker = new google.maps.Marker({
-                                    map: map,
-                                    position: { lat: property.latitude, lng: property.longitude },
-                                });
-
-                                const infowindow = new google.maps.InfoWindow({
-                                    content: `<div><strong>${property.address}</strong></div>`,
-                                });
-
-                                marker.addListener('click', function() {
-                                    infowindow.open(map, marker);
-                                });
-                            });
-                        } else {
-                            alert("No properties found within a 3-mile radius.");
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error fetching nearby properties:", error);
-                    });
-            }
-        }
-
-        window.onload = initMap;
-    </script>
 </head>
 <body>
     <header>
         <h1><a href="{% url 'home' %}">Welcome to HomeConnectPro</a></h1>
         <form id="property-form" method="get" action="{% url 'search' %}">
             <input type="text" id="address" name="query" placeholder="Enter Address" value="{{ request.GET.query }}">
-            <input type="text" id="state" name="state" placeholder="Enter State" value="{{ request.GET.state }}">
-            <input type="text" id="zip_code" name="zipcode" placeholder="Enter Zip Code" maxlength="5" value="{{ request.GET.zip_code }}">
+            <select id="state" name="state" required>
+                <option value="">Select State</option>
+                <option value="AL" {% if request.GET.state == 'AL' %}selected{% endif %}>Alabama</option>
+                <option value="AK" {% if request.GET.state == 'AK' %}selected{% endif %}>Alaska</option>
+                <option value="AZ" {% if request.GET.state == 'AZ' %}selected{% endif %}>Arizona</option>
+                <option value="AR" {% if request.GET.state == 'AR' %}selected{% endif %}>Arkansas</option>
+                <option value="CA" {% if request.GET.state == 'CA' %}selected{% endif %}>California</option>
+                <option value="CO" {% if request.GET.state == 'CO' %}selected{% endif %}>Colorado</option>
+                <option value="CT" {% if request.GET.state == 'CT' %}selected{% endif %}>Connecticut</option>
+                <option value="DE" {% if request.GET.state == 'DE' %}selected{% endif %}>Delaware</option>
+                <option value="FL" {% if request.GET.state == 'FL' %}selected{% endif %}>Florida</option>
+                <option value="GA" {% if request.GET.state == 'GA' %}selected{% endif %}>Georgia</option>
+                <option value="HI" {% if request.GET.state == 'HI' %}selected{% endif %}>Hawaii</option>
+                <option value="ID" {% if request.GET.state == 'ID' %}selected{% endif %}>Idaho</option>
+                <option value="IL" {% if request.GET.state == 'IL' %}selected{% endif %}>Illinois</option>
+                <option value="IN" {% if request.GET.state == 'IN' %}selected{% endif %}>Indiana</option>
+                <option value="IA" {% if request.GET.state == 'IA' %}selected{% endif %}>Iowa</option>
+                <option value="KS" {% if request.GET.state == 'KS' %}selected{% endif %}>Kansas</option>
+                <option value="KY" {% if request.GET.state == 'KY' %}selected{% endif %}>Kentucky</option>
+                <option value="LA" {% if request.GET.state == 'LA' %}selected{% endif %}>Louisiana</option>
+                <option value="ME" {% if request.GET.state == 'ME' %}selected{% endif %}>Maine</option>
+                <option value="MD" {% if request.GET.state == 'MD' %}selected{% endif %}>Maryland</option>
+                <option value="MA" {% if request.GET.state == 'MA' %}selected{% endif %}>Massachusetts</option>
+                <option value="MI" {% if request.GET.state == 'MI' %}selected{% endif %}>Michigan</option>
+                <option value="MN" {% if request.GET.state == 'MN' %}selected{% endif %}>Minnesota</option>
+                <option value="MS" {% if request.GET.state == 'MS' %}selected{% endif %}>Mississippi</option>
+                <option value="MO" {% if request.GET.state == 'MO' %}selected{% endif %}>Missouri</option>
+                <option value="MT" {% if request.GET.state == 'MT' %}selected{% endif %}>Montana</option>
+                <option value="NE" {% if request.GET.state == 'NE' %}selected{% endif %}>Nebraska</option>
+                <option value="NV" {% if request.GET.state == 'NV' %}selected{% endif %}>Nevada</option>
+                <option value="NH" {% if request.GET.state == 'NH' %}selected{% endif %}>New Hampshire</option>
+                <option value="NJ" {% if request.GET.state == 'NJ' %}selected{% endif %}>New Jersey</option>
+                <option value="NM" {% if request.GET.state == 'NM' %}selected{% endif %}>New Mexico</option>
+                <option value="NY" {% if request.GET.state == 'NY' %}selected{% endif %}>New York</option>
+                <option value="NC" {% if request.GET.state == 'NC' %}selected{% endif %}>North Carolina</option>
+                <option value="ND" {% if request.GET.state == 'ND' %}selected{% endif %}>North Dakota</option>
+                <option value="OH" {% if request.GET.state == 'OH' %}selected{% endif %}>Ohio</option>
+                <option value="OK" {% if request.GET.state == 'OK' %}selected{% endif %}>Oklahoma</option>
+                <option value="OR" {% if request.GET.state == 'OR' %}selected{% endif %}>Oregon</option>
+                <option value="PA" {% if request.GET.state == 'PA' %}selected{% endif %}>Pennsylvania</option>
+                <option value="RI" {% if request.GET.state == 'RI' %}selected{% endif %}>Rhode Island</option>
+                <option value="SC" {% if request.GET.state == 'SC' %}selected{% endif %}>South Carolina</option>
+                <option value="SD" {% if request.GET.state == 'SD' %}selected{% endif %}>South Dakota</option>
+                <option value="TN" {% if request.GET.state == 'TN' %}selected{% endif %}>Tennessee</option>
+                <option value="TX" {% if request.GET.state == 'TX' %}selected{% endif %}>Texas</option>
+                <option value="UT" {% if request.GET.state == 'UT' %}selected{% endif %}>Utah</option>
+                <option value="VT" {% if request.GET.state == 'VT' %}selected{% endif %}>Vermont</option>
+                <option value="VA" {% if request.GET.state == 'VA' %}selected{% endif %}>Virginia</option>
+                <option value="WA" {% if request.GET.state == 'WA' %}selected{% endif %}>Washington</option>
+                <option value="WV" {% if request.GET.state == 'WV' %}selected{% endif %}>West Virginia</option>
+                <option value="WI" {% if request.GET.state == 'WI' %}selected{% endif %}>Wisconsin</option>
+                <option value="WY" {% if request.GET.state == 'WY' %}selected{% endif %}>Wyoming</option>
+            </select>
+            <input type="text" id="zip_code" name="zipcode" placeholder="Enter Zip Code" maxlength="5" value="{{ request.GET.zipcode }}">
             <button type="submit">Search</button>
         </form>
         <nav>

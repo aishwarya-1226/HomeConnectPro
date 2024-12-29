@@ -4,13 +4,11 @@ from django.db import migrations,models
 from geopy.geocoders import GoogleV3
 from geopy.exc import GeocoderTimedOut
 import logging
-from django.db import connection
-
-GOOGLE_API_KEY ='AIzaSyAOcYGAH1Ye5f0nRxF6YJjdLlHycdSrVQw'
+from django.db import connection, transaction
 
 def populate_lat_long(apps, schema_editor):
     Property = apps.get_model('core', 'Property')  # Ensure you reference the correct app and model
-    geolocator = GoogleV3(api_key=GOOGLE_API_KEY)
+    geolocator = GoogleV3(api_key=AIzaSyAOcYGAH1Ye5f0nRxF6YJjdLlHycdSrVQw)
 
     for property in Property.objects.all():
         if not property.latitude or not property.longitude:
@@ -45,9 +43,16 @@ def clear_lat_long(apps, schema_editor):
 def initialize_spatialite(apps, schema_editor):
     """Custom function to initialize SpatiaLite"""
     if connection.vendor == 'sqlite':
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT load_extension('mod_spatialite');")
-            cursor.execute("SELECT InitSpatialMetadata(1);")  # Initialize SpatiaLite extension
+        try:
+            with connection.cursor() as cursor:
+                with transaction.atomic(using=connection.alias, savepoint=False):
+                    cursor.execute("SELECT load_extension('mod_spatialite');")
+                    cursor.execute("SELECT InitSpatialMetadata(1);")  # Initialize SpatiaLite extension
+                    print("SpatiaLite initialized successfully.")
+        except Exception as e:
+            # Catch any errors and log them for debugging purposes
+            print(f"Error initializing SpatiaLite: {e}")
+            raise
 
 class Migration(migrations.Migration):
 
