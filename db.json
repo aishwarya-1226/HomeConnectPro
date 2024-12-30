@@ -1,0 +1,96 @@
+{
+    "properties": [
+      {
+        "address": "1234 Maple Street",
+        "category": "Single Family Home",
+        "description": "Spacious 3-bedroom home with a large backyard and updated kitchen.",
+        "price": 250000,
+        "year_built": 1998,
+        "number_of_bedrooms": 3,
+        "number_of_bathrooms": 2,
+        "land_size": 0.25,
+        "image": "media/property_images/kansas1.jpg",
+        "state": "KS",
+        "zip_code": "66102"
+      },
+      {
+        "address": "5678 Oak Avenue",
+        "category": "Townhouse",
+        "description": "Cozy 2-bedroom townhouse with a fireplace and easy access to public transport.",
+        "price": 185000,
+        "year_built": 2010,
+        "number_of_bedrooms": 2,
+        "number_of_bathrooms": 1.5,
+        "land_size": 0.15,
+        "image": "media/property_images/kansas2.jpg",
+        "state": "KS",
+        "zip_code": "66204"
+      },
+      {
+        "address": "1357 Pine Lane",
+        "category": "Condo",
+        "description": "Modern 1-bedroom condo with great views and close to downtown.",
+        "price": 145000,
+        "year_built": 2015,
+        "number_of_bedrooms": 1,
+        "number_of_bathrooms": 1,
+        "land_size": 0.05,
+        "image": "media/property_images/kansas3.jpg",
+        "state": "KS",
+        "zip_code": "66106"
+      },
+      {
+        "address": "2468 Cedar Drive",
+        "category": "Farmhouse",
+        "description": "Beautiful farmhouse with a large barn and over 5 acres of land.",
+        "price": 400000,
+        "year_built": 1970,
+        "number_of_bedrooms": 4,
+        "number_of_bathrooms": 3,
+        "land_size": 5.0,
+        "image": "media/property_images/kansas4.jpg",
+        "state": "KS",
+        "zip_code": "67501"
+      },
+      {
+        "address": "7890 Birch Road",
+        "category": "Single Family Home",
+        "description": "Charming 3-bedroom home with a finished basement and a two-car garage.",
+        "price": 220000,
+        "year_built": 1985,
+        "number_of_bedrooms": 3,
+        "number_of_bathrooms": 2,
+        "land_size": 0.35,
+        "image": "media/property_images/kansas5.jpg",
+        "state": "KS",
+        "zip_code": "66112"
+      },
+      {
+        "address": "3579 Ash Place",
+        "category": "Townhouse",
+        "description": "Elegant 2-bedroom townhouse in a gated community with pool access.",
+        "price": 215000,
+        "year_built": 2012,
+        "number_of_bedrooms": 2,
+        "number_of_bathrooms": 2,
+        "land_size": 0.1,
+        "image": "media/property_images/kansas6.jpg",
+        "state": "KS",
+        "zip_code": "66210"
+      },
+      {
+        "address": "4682 Willow Way",
+        "category": "Ranch",
+        "description": "Sprawling ranch-style home with a huge backyard, perfect for family gatherings.",
+        "price": 315000,
+        "year_built": 1995,
+        "number_of_bedrooms": 4,
+        "number_of_bathrooms": 3,
+        "land_size": 0.75,
+        "image": "media/property_images/kansas7.jpg",
+        "state": "KS",
+        "zip_code": "66044"
+      }
+    ]
+  }
+  

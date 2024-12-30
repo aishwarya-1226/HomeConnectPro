@@ -8,4 +8,4 @@ asgiref>=3.3.2,<4
 pytz
 sqlparse>=0.2.2
 geopy==2.3.0
-googlemaps>=5.1.0
+googlemaps>=4.10.0
