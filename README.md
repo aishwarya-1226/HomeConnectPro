@@ -1,6 +1,6 @@
-# HOME Connect
+# HOME Connect Pro
 
-HOME Connect is an application designed to streamline property management, listing, and inquiry processes. It supports multiple user roles including Clients, Property Purchasers, and Salespersons.
+HOME Connect Pro is an application designed to streamline property management, listing, and inquiry processes. It supports multiple user roles including Clients, Property Purchasers, and Salespersons.
 
 ## Features
 
@@ -8,7 +8,7 @@ HOME Connect is an application designed to streamline property management, listi
 - User Roles: Client, Property Purchaser, Salesperson
 - Profile Management
 - Property Listing and Details
-- Property Search
+- Property Search (geolocation enabled)
 - Inquiry System (Create, Track, and Respond to Inquiries)
 
 ## Installation
@@ -23,8 +23,8 @@ HOME Connect is an application designed to streamline property management, listi
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/asp_homeconnect.git
-cd asp_homeconnect
+git clone https://github.com/yourusername/HomeConnectPro.git
+cd HomeConnectPro
 Create and Activate a Virtual Environment:
 
 python -m venv venv
@@ -34,13 +34,16 @@ Install Dependencies:
 pip install -r requirements.txt
 Configuration
 Database Setup
-Apply Migrations:
 
+Apply Migrations: 
 python manage.py migrate
-Create a Superuser:
 
+Create a Superuser:
 python manage.py createsuperuser
 Running the Development Server
+
+Load data:
+python manage.py loaddata db.json
 
 python manage.py runserver
 Usage
