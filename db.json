@@ -1,6 +1,8 @@
-{
-    "properties": [
-      {
+[
+    {
+      "model": "core.property",
+      "pk": 1,
+      "fields": {
         "address": "1234 Maple Street",
         "category": "Single Family Home",
         "description": "Spacious 3-bedroom home with a large backyard and updated kitchen.",
@@ -9,11 +11,16 @@
         "number_of_bedrooms": 3,
         "number_of_bathrooms": 2,
         "land_size": 0.25,
-        "image": "media/property_images/kansas1.jpg",
+        "image": "property_images/kansas1.jpg",
         "state": "KS",
-        "zip_code": "66102"
-      },
-      {
+        "zip_code": "66102",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 2,
+      "fields": {
         "address": "5678 Oak Avenue",
         "category": "Townhouse",
         "description": "Cozy 2-bedroom townhouse with a fireplace and easy access to public transport.",
@@ -22,11 +29,16 @@
         "number_of_bedrooms": 2,
         "number_of_bathrooms": 1.5,
         "land_size": 0.15,
-        "image": "media/property_images/kansas2.jpg",
+        "image": "property_images/kansas2.jpg",
         "state": "KS",
-        "zip_code": "66204"
-      },
-      {
+        "zip_code": "66204",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 3,
+      "fields": {
         "address": "1357 Pine Lane",
         "category": "Condo",
         "description": "Modern 1-bedroom condo with great views and close to downtown.",
@@ -35,11 +47,16 @@
         "number_of_bedrooms": 1,
         "number_of_bathrooms": 1,
         "land_size": 0.05,
-        "image": "media/property_images/kansas3.jpg",
+        "image": "property_images/kansas3.jpg",
         "state": "KS",
-        "zip_code": "66106"
-      },
-      {
+        "zip_code": "66106",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 4,
+      "fields": {
         "address": "2468 Cedar Drive",
         "category": "Farmhouse",
         "description": "Beautiful farmhouse with a large barn and over 5 acres of land.",
@@ -48,11 +65,16 @@
         "number_of_bedrooms": 4,
         "number_of_bathrooms": 3,
         "land_size": 5.0,
-        "image": "media/property_images/kansas4.jpg",
+        "image": "property_images/kansas4.jpg",
         "state": "KS",
-        "zip_code": "67501"
-      },
-      {
+        "zip_code": "67501",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 5,
+      "fields": {
         "address": "7890 Birch Road",
         "category": "Single Family Home",
         "description": "Charming 3-bedroom home with a finished basement and a two-car garage.",
@@ -61,11 +83,16 @@
         "number_of_bedrooms": 3,
         "number_of_bathrooms": 2,
         "land_size": 0.35,
-        "image": "media/property_images/kansas5.jpg",
+        "image": "property_images/kansas5.jpg",
         "state": "KS",
-        "zip_code": "66112"
-      },
-      {
+        "zip_code": "66112",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 6,
+      "fields": {
         "address": "3579 Ash Place",
         "category": "Townhouse",
         "description": "Elegant 2-bedroom townhouse in a gated community with pool access.",
@@ -74,11 +101,16 @@
         "number_of_bedrooms": 2,
         "number_of_bathrooms": 2,
         "land_size": 0.1,
-        "image": "media/property_images/kansas6.jpg",
+        "image": "property_images/kansas6.jpg",
         "state": "KS",
-        "zip_code": "66210"
-      },
-      {
+        "zip_code": "66210",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 7,
+      "fields": {
         "address": "4682 Willow Way",
         "category": "Ranch",
         "description": "Sprawling ranch-style home with a huge backyard, perfect for family gatherings.",
@@ -87,10 +119,335 @@
         "number_of_bedrooms": 4,
         "number_of_bathrooms": 3,
         "land_size": 0.75,
-        "image": "media/property_images/kansas7.jpg",
+        "image": "property_images/kansas7.jpg",
         "state": "KS",
-        "zip_code": "66044"
+        "zip_code": "66044",
+        "property_purchaser_id": 1
       }
-    ]
-  }
+    },
+    {
+      "model": "core.property",
+      "pk": 8,
+      "fields": {
+        "address": "1122 Elm Street",
+        "category": "Single Family Home",
+        "description": "Lovely 3-bedroom home in a quiet neighborhood with a spacious front porch.",
+        "price": 280000,
+        "year_built": 2005,
+        "number_of_bedrooms": 3,
+        "number_of_bathrooms": 2,
+        "land_size": 0.2,
+        "image": "property_images/california1.jpg",
+        "state": "CA",
+        "zip_code": "90001",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 9,
+      "fields": {
+        "address": "9876 Rosewood Avenue",
+        "category": "Condo",
+        "description": "Bright and airy 2-bedroom condo located near the beach.",
+        "price": 350000,
+        "year_built": 2018,
+        "number_of_bedrooms": 2,
+        "number_of_bathrooms": 2,
+        "land_size": 0.1,
+        "image": "property_images/florida1.jpg",
+        "state": "FL",
+        "zip_code": "33139",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 10,
+      "fields": {
+        "address": "3456 Park Lane",
+        "category": "Townhouse",
+        "description": "Stylish 3-bedroom townhouse with modern finishes and a private garden.",
+        "price": 310000,
+        "year_built": 2015,
+        "number_of_bedrooms": 3,
+        "number_of_bathrooms": 2,
+        "land_size": 0.2,
+        "image": "property_images/texas1.jpg",
+        "state": "TX",
+        "zip_code": "75001",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 11,
+      "fields": {
+        "address": "2468 Maple Grove",
+        "category": "Single Family Home",
+        "description": "Cozy 4-bedroom home with a fully landscaped backyard and a two-car garage.",
+        "price": 265000,
+        "year_built": 2000,
+        "number_of_bedrooms": 4,
+        "number_of_bathrooms": 2,
+        "land_size": 0.3,
+        "image": "property_images/ohio1.jpg",
+        "state": "OH",
+        "zip_code": "44101",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 12,
+      "fields": {
+        "address": "5789 Pinecrest Drive",
+        "category": "Ranch",
+        "description": "Spacious ranch-style home with a large patio and open living area.",
+        "price": 400000,
+        "year_built": 1999,
+        "number_of_bedrooms": 4,
+        "number_of_bathrooms": 3,
+        "land_size": 1.0,
+        "image": "property_images/colorado1.jpg",
+        "state": "CO",
+        "zip_code": "80202",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 13,
+      "fields": {
+        "address": "7634 Oakwood Boulevard",
+        "category": "Farmhouse",
+        "description": "Country farmhouse with 6 acres of land and a barn, ideal for horses.",
+        "price": 475000,
+        "year_built": 1980,
+        "number_of_bedrooms": 5,
+        "number_of_bathrooms": 4,
+        "land_size": 6.0,
+        "image": "property_images/tennessee1.jpg",
+        "state": "TN",
+        "zip_code": "37011",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 14,
+      "fields": {
+        "address": "1289 Birchwood Lane",
+        "category": "Single Family Home",
+        "description": "Charming 3-bedroom home in a rural setting with a large front yard.",
+        "price": 225000,
+        "year_built": 2010,
+        "number_of_bedrooms": 3,
+        "number_of_bathrooms": 2,
+        "land_size": 0.4,
+        "image": "property_images/michigan1.jpg",
+        "state": "MI",
+        "zip_code": "48104",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 15,
+      "fields": {
+        "address": "1234 Glacier Bay Road",
+        "category": "Single Family Home",
+        "description": "A beautiful home with scenic views of the mountains and rivers.",
+        "price": 420000,
+        "year_built": 2012,
+        "number_of_bedrooms": 3,
+        "number_of_bathrooms": 2,
+        "land_size": 0.5,
+        "image": "property_images/alaska1.jpg",
+        "state": "AK",
+        "zip_code": "99501",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 16,
+      "fields": {
+        "address": "4321 Desert Springs Lane",
+        "category": "Condo",
+        "description": "Modern 2-bedroom condo with stunning desert views and community amenities.",
+        "price": 275000,
+        "year_built": 2016,
+        "number_of_bedrooms": 2,
+        "number_of_bathrooms": 2,
+        "land_size": 0.1,
+        "image": "property_images/arizona1.jpg",
+        "state": "AZ",
+        "zip_code": "85001",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+      "model": "core.property",
+      "pk": 17,
+      "fields": {
+        "address": "8765 Sunflower Ridge",
+        "category": "Single Family Home",
+        "description": "Stunning 4-bedroom home with a large backyard and beautiful mountain views.",
+        "price": 530000,
+        "year_built": 2019,
+        "number_of_bedrooms": 4,
+        "number_of_bathrooms": 3,
+        "land_size": 0.35,
+        "image": "property_images/georgia1.jpg",
+        "state": "GA",
+        "zip_code": "30301",
+        "property_purchaser_id": 1
+      }
+    },
+    {
+        "model": "core.property",
+        "pk": 18,
+        "fields": {
+          "address": "1234 Magnolia Avenue",
+          "category": "Single Family Home",
+          "description": "Charming 3-bedroom home in a peaceful neighborhood.",
+          "price": 215000,
+          "year_built": 1990,
+          "number_of_bedrooms": 3,
+          "number_of_bathrooms": 2,
+          "land_size": 0.2,
+          "image": "property_images/alabama1.jpg",
+          "state": "AL",
+          "zip_code": "35203",
+          "property_purchaser_id": 1
+        }
+      },
+      {
+        "model": "core.property",
+        "pk": 19,
+        "fields": {
+          "address": "5678 Beach Road",
+          "category": "Condo",
+          "description": "Beachfront condo with stunning ocean views.",
+          "price": 300000,
+          "year_built": 2015,
+          "number_of_bedrooms": 2,
+          "number_of_bathrooms": 2,
+          "land_size": 0.05,
+          "image": "property_images/delaware1.jpg",
+          "state": "DE",
+          "zip_code": "19971",
+          "property_purchaser_id": 1
+        }
+      },
+      {
+        "model": "core.property",
+        "pk": 20,
+        "fields": {
+          "address": "9102 Lincoln Avenue",
+          "category": "Townhouse",
+          "description": "Modern townhouse with easy access to downtown.",
+          "price": 350000,
+          "year_built": 2018,
+          "number_of_bedrooms": 3,
+          "number_of_bathrooms": 2.5,
+          "land_size": 0.1,
+          "image": "property_images/illinois1.jpg",
+          "state": "IL",
+          "zip_code": "60601",
+          "property_purchaser_id": 1
+        }
+      },
+      {
+        "model": "core.property",
+        "pk": 21,
+        "fields": {
+          "address": "3456 Maple Street",
+          "category": "Single Family Home",
+          "description": "Spacious 4-bedroom home with a large garden.",
+          "price": 265000,
+          "year_built": 2000,
+          "number_of_bedrooms": 4,
+          "number_of_bathrooms": 2,
+          "land_size": 0.3,
+          "image": "property_images/indiana1.jpg",
+          "state": "IN",
+          "zip_code": "46204",
+          "property_purchaser_id": 1
+        }
+      },
+      {
+        "model": "core.property",
+        "pk": 22,
+        "fields": {
+          "address": "7890 Hawkeye Drive",
+          "category": "Ranch",
+          "description": "Beautiful ranch home with an open floor plan.",
+          "price": 320000,
+          "year_built": 2005,
+          "number_of_bedrooms": 4,
+          "number_of_bathrooms": 3,
+          "land_size": 0.4,
+          "image": "property_images/iowa1.jpg",
+          "state": "IA",
+          "zip_code": "50309",
+          "property_purchaser_id": 1
+        }
+      },
+      {
+        "model": "core.property",
+        "pk": 23,
+        "fields": {
+          "address": "1122 Beacon Street",
+          "category": "Condo",
+          "description": "Stylish 2-bedroom condo in a prime location near city center.",
+          "price": 375000,
+          "year_built": 2012,
+          "number_of_bedrooms": 2,
+          "number_of_bathrooms": 2,
+          "land_size": 0.05,
+          "image": "property_images/massachusetts1.jpg",
+          "state": "MA",
+          "zip_code": "02215",
+          "property_purchaser_id": 1
+        }
+      },
+      {
+        "model": "core.property",
+        "pk": 24,
+        "fields": {
+          "address": "5678 Sierra Parkway",
+          "category": "Single Family Home",
+          "description": "Spacious 3-bedroom home with mountain views and a backyard.",
+          "price": 410000,
+          "year_built": 2016,
+          "number_of_bedrooms": 3,
+          "number_of_bathrooms": 2,
+          "land_size": 0.35,
+          "image": "property_images/nevada1.jpg",
+          "state": "NV",
+          "zip_code": "89501",
+          "property_purchaser_id": 1
+        }
+      },
+      {
+        "model": "core.property",
+        "pk": 25,
+        "fields": {
+          "address": "6608 W 141st Ter",
+          "category": "Single Family Home",
+          "description": "Spacious 2-bedroom home with balcony and a backyard.",
+          "price": 310000,
+          "year_built": 2019,
+          "number_of_bedrooms": 2,
+          "number_of_bathrooms": 2,
+          "land_size": 0.35,
+          "image": "property_images/kansas1.jpg",
+          "state": "KS",
+          "zip_code": "66223",
+          "property_purchaser_id": 1
+        }
+      }
+  ]
   

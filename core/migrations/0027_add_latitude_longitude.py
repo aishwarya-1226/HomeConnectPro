@@ -8,7 +8,7 @@ from django.db import connection, transaction
 
 def populate_lat_long(apps, schema_editor):
     Property = apps.get_model('core', 'Property')  # Ensure you reference the correct app and model
-    geolocator = GoogleV3(api_key=AIzaSyAOcYGAH1Ye5f0nRxF6YJjdLlHycdSrVQw)
+    geolocator = GoogleV3(api_key="AIzaSyAOcYGAH1Ye5f0nRxF6YJjdLlHycdSrVQw")
 
     for property in Property.objects.all():
         if not property.latitude or not property.longitude:
@@ -40,20 +40,6 @@ def clear_lat_long(apps, schema_editor):
         property.longitude = None
         property.save()
 
-def initialize_spatialite(apps, schema_editor):
-    """Custom function to initialize SpatiaLite"""
-    if connection.vendor == 'sqlite':
-        try:
-            with connection.cursor() as cursor:
-                with transaction.atomic(using=connection.alias, savepoint=False):
-                    cursor.execute("SELECT load_extension('mod_spatialite');")
-                    cursor.execute("SELECT InitSpatialMetadata(1);")  # Initialize SpatiaLite extension
-                    print("SpatiaLite initialized successfully.")
-        except Exception as e:
-            # Catch any errors and log them for debugging purposes
-            print(f"Error initializing SpatiaLite: {e}")
-            raise
-
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -72,5 +58,4 @@ class Migration(migrations.Migration):
             field=models.FloatField(null=True, blank=True),
         ),
         migrations.RunPython(populate_lat_long, reverse_code=clear_lat_long),
-        migrations.RunPython(initialize_spatialite), 
     ]

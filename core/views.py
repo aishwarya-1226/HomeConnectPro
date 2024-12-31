@@ -14,8 +14,6 @@ from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required  # Import the decorator
 from django.db import IntegrityError
 from django.http import JsonResponse
-from django.contrib.gis.geos import Point
-from django.contrib.gis.measure import D
 from geopy.distance import geodesic
 import googlemaps
 
